@@ -1,4 +1,4 @@
-import { divProps, frame, createDiv, getUiInputDiv } from '../dom'
+import { fieldProps, frame, createField, getField, fieldHasChanged } from '../dom'
 import { resolveValueArg, InputResult, InputValueArg, NameArg, resolveNameArg } from '../types'
 import { toArray } from '../utils'
 
@@ -9,7 +9,7 @@ export const create = <T extends readonly unknown[]>(
 ): InputResult<T[number]> => {
   const { value, initialValue } = resolveValueArg(valueArg)
   const { id, displayName } = resolveNameArg(name)
-  const div = createDiv(id, 'buttons', /* html */`
+  const div = createField(id, 'buttons', /* html */`
     <div class="label">
       <div class="name">${displayName}</div>
     </div>
@@ -47,7 +47,7 @@ export const create = <T extends readonly unknown[]>(
     }
   }
   setSelectedIndex(options.indexOf(initialValue))
-  divProps.get(div)!.updateValue = setSelectedIndex
+  fieldProps.get(div)!.updateValue = setSelectedIndex
   return { buttons, value, hasChanged: false }
 }
 
@@ -56,13 +56,13 @@ export const buttons = <T extends readonly unknown[]>(
   valueArg: InputValueArg<T[number]>, 
   options: Readonly<T>,
 ): InputResult<T[number]> => {
-  const div = getUiInputDiv(name)
+  const div = getField(name)
   if (div) {
     const buttons = toArray(div.querySelectorAll('button'))
     const index = buttons.findIndex(button => button.classList.contains('selected'))
-    const hasChanged = Number.parseInt(div.dataset.frame ?? '0') === frame - 1
+    const hasChanged = fieldHasChanged(div)
     const value = hasChanged ? options[index] : resolveValueArg(valueArg, options[index]).value
-    divProps.get(div)!.updateValue(options.indexOf(value))
+    fieldProps.get(div)!.updateValue(options.indexOf(value))
     return { buttons, value, hasChanged }
   }
   return create(name, valueArg, options)

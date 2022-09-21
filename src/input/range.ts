@@ -1,4 +1,4 @@
-import { divProps, frame, createDiv, getUiInputDiv } from '../dom'
+import { fieldProps, frame, createField, getField, fieldHasChanged } from '../dom'
 import { resolveValueArg, InputResult, InputValueArg, resolveNameArg, NameArg } from '../types'
 
 type Step = number | 'any'
@@ -35,12 +35,14 @@ const create = (
   const { value, initialValue } = resolveValueArg(valueArg)
   const { min, max, step, decimals } = resolvePropsArg(props)
   const format = (n: number) => n.toFixed(decimals)
-  const div = createDiv(id, 'range', /* html */`
+  const div = createField(id, 'range', /* html */`
     <div class="label">
       <div class="name">${displayName}</div>
       <div class="value">(${format(value)})</div>
     </div>
-    <input type="range" min="${min}" max="${max}" step="${step}" value="${value}"></input>
+    <div class="input">
+      <input type="range" min="${min}" max="${max}" step="${step}" value="${value}"></input>
+    </div>
   `)
   div.dataset.frame = frame.toString()
   const input = div.querySelector('input')!
@@ -60,7 +62,7 @@ const create = (
   nameDiv.onclick = () => {
     updateValue(initialValue, { triggerChange: true })
   }
-  divProps.get(div)!.updateValue = updateValue
+  fieldProps.get(div)!.updateValue = updateValue
   
   return { value, hasChanged: false, input }
 }
@@ -70,13 +72,13 @@ export const range = (
   valueArg: InputValueArg<number>, 
   props: PropsArg = {},
  ): InputResult<number> => {
-  const div = getUiInputDiv(name)
+  const div = getField(name)
   if (div) {
     const input = div.querySelector('input')!
-    const hasChanged = Number.parseInt(div.dataset.frame ?? '0') === frame - 1
+    const hasChanged = fieldHasChanged(div)
     const currentValue = Number.parseFloat(input.value)
     const value = hasChanged ? currentValue : resolveValueArg(valueArg, currentValue).value
-    divProps.get(div)!.updateValue(value)
+    fieldProps.get(div)!.updateValue(value)
     return { input, value, hasChanged }
   }
   return create(name, valueArg, props)

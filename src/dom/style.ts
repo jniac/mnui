@@ -10,6 +10,10 @@ style.innerHTML = /* css */ `
   }
 
   #mnui {
+    --label-size: 140px;
+  }
+
+  #mnui {
     position: fixed;
     top: 0;
     left: 0;
@@ -25,6 +29,7 @@ style.innerHTML = /* css */ `
   }
 
   #mnui > .wrapper {
+    width: 280px;
     backdrop-filter: blur(16px) brightness(1.15);
     -webkit-backdrop-filter: blur(16px) brightness(1.15);
   }
@@ -36,7 +41,7 @@ style.innerHTML = /* css */ `
   #mnui .group {
     border: solid 1px black;
     padding: 4px;
-    width: 320px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -65,6 +70,9 @@ style.innerHTML = /* css */ `
   }
 
   #mnui .group .contents {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     padding-left: 16px;
   }
 
@@ -76,57 +84,65 @@ style.innerHTML = /* css */ `
     display: none;
   }
 
-  #mnui div.input {
-    max-width: 320px;
+  #mnui .field {
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 2px;
+    overflow: hidden;
   }
 
-  #mnui div.input:hover {
+  #mnui .field:hover {
     font-weight: 500;
     color: #06f;
   }
 
-  #mnui div.input + div.input {
+  #mnui .field + .field {
     border-top: solid 1px black;
   }
 
 
-  #mnui div.input > .label {
+  #mnui .field > .label {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    flex: 0 0 140px;
+    align-items: baseline;
+    flex: 0 0 var(--label-size);
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  #mnui div.input > .label + * {
+  #mnui .field > .input {
     flex: 1 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
-  #mnui div.input > * + * {
+  #mnui .field > .input > * {
+    width: 100%;
+  }
+
+  #mnui .field > * + * {
     margin-left: 4px;
   }
 
-  #mnui div.input .value {
+  #mnui .field .value {
     padding-left: 4px;
     font-size: .66em;
   }
 
-  #mnui div.input.button.switch.switch-on {
+  #mnui .field.button.switch.switch-on {
     font-weight: 600;
     font-style: italic;
   }
 
-  #mnui div.input.button.switch.switch-off {
+  #mnui .field.button.switch.switch-off {
     font-weight: 300;
     font-style: none;
   }
 
-  #mnui div.input.button button {
+  #mnui .field.button button {
     flex: 1 0 0;
     font-weight: inherit;
     font-style: inherit;
@@ -139,7 +155,7 @@ style.innerHTML = /* css */ `
   #mnui button.selected {
     font-weight: 900;
   }
-  #mnui div.input .name {
+  #mnui .field .name {
     cursor: pointer;
   }
 
@@ -152,7 +168,7 @@ style.innerHTML = /* css */ `
     BAD-CSS-CONFLICT ->
     Because of conflicts with some bad-css somewhere. 
   */
-    #mnui div.input.button {
+    #mnui .field.button {
     border-radius: 0;
     width: unset;
     height: unset;
@@ -160,7 +176,7 @@ style.innerHTML = /* css */ `
     left: unset;
   }
   
-  #mnui div.input.button:hover {
+  #mnui .field.button:hover {
     background: unset;
   }
   /*

@@ -1,4 +1,4 @@
-import { createDiv, divProps, frame, getUiInputDiv } from '../dom'
+import { createField, fieldHasChanged, fieldProps, frame, getField } from '../dom'
 import { NameArg, InputResult, InputValueArg, resolveNameArg, resolveValueArg } from '../types'
 
 type ButtonType = 'classic' | 'switch'
@@ -10,7 +10,7 @@ const create = (
 ): InputResult<boolean> => {
   const { id, displayName } = resolveNameArg(name)
   let { value } = resolveValueArg(switchOn)
-  const div = createDiv(id, `button ${type}`, /* html */`
+  const div = createField(id, `button ${type}`, /* html */`
     <button>${displayName}</button>
   `)
   const button = div.querySelector('button')!
@@ -33,7 +33,7 @@ const create = (
     updateValue(!currentValue, { triggerChange: true })
   }
   updateValue(value, { forceUpdate: true })
-  divProps.get(div)!.updateValue = updateValue
+  fieldProps.get(div)!.updateValue = updateValue
   return { value, hasChanged: false, button }
 }
 
@@ -42,13 +42,13 @@ export const button = (
   valueArg?: InputValueArg<boolean>,
   type: ButtonType = valueArg === undefined ? 'classic' : 'switch',
 ): InputResult<boolean> => {
-  const div = getUiInputDiv(name)
+  const div = getField(name)
   if (div) {
     const button = div.querySelector('button')
-    const hasChanged = Number.parseInt(div.dataset.frame ?? '0') === frame - 1
+    const hasChanged = fieldHasChanged(div)
     const currentValue = div.dataset.switchState === 'on'
     const value = hasChanged ? currentValue : resolveValueArg(valueArg ?? false, currentValue).value
-    divProps.get(div)!.updateValue(value)
+    fieldProps.get(div)!.updateValue(value)
     return { value, hasChanged, button }
   }
   return create(name, valueArg, type)

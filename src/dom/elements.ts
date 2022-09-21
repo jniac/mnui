@@ -1,14 +1,20 @@
 import { NameArg, resolveNameArg } from '../types'
-import { currentGroupContent } from './group'
+import { frame } from './frame'
 
-type DivProps = {
+export let currentGroupContents: HTMLDivElement | null = null
+export const setCurrentGroupContents = (value: HTMLDivElement | null) => {
+  currentGroupContents = value
+}
+
+type FieldProps = {
   updateValue: (value: any) => void,
 }
 
 const noop = () => {}
-export const divProps = new Map<HTMLDivElement, DivProps>()
 
-const createUiDiv = () => {
+export const fieldProps = new Map<HTMLDivElement, FieldProps>()
+
+const createRoot = () => {
   const div = document.createElement(`div`)
   div.id = `mnui`
   div.innerHTML = `<div class="wrapper"></div>`
@@ -16,20 +22,20 @@ const createUiDiv = () => {
   return div
 }
 
-export const getUiRootDiv = () => {
+export const getRoot = () => {
   return (
     document.querySelector(`#mnui`) 
-    ?? createUiDiv()
+    ?? createRoot()
   ) as HTMLDivElement
 }
 
-export const getUiWrapperDiv = () => {
-  return getUiRootDiv().querySelector(`.wrapper`) as HTMLDivElement
+export const getWrapper = () => {
+  return getRoot().querySelector(`.wrapper`) as HTMLDivElement
 }
 
-export const getUiInputDiv = (name: NameArg) => {
+export const getField = (name: NameArg) => {
   const { id } = resolveNameArg(name)
-  return getUiWrapperDiv().querySelector(`#${id}`) as HTMLDivElement
+  return getWrapper().querySelector(`#${id}.field`) as HTMLDivElement
 }
 
 export const setStyle = ({
@@ -38,19 +44,23 @@ export const setStyle = ({
   root: Partial<CSSStyleDeclaration>
 }> = {}) => {
   if (root) {
-    Object.assign(getUiRootDiv().style, root)
+    Object.assign(getRoot().style, root)
   }
 }
 
-export const createDiv = (id: string, className: string, innerHTML: string) => {
+export const createField = (id: string, className: string, innerHTML: string) => {
   const div = document.createElement(`div`)
   div.id = id
-  div.className = `input ${className}`
+  div.className = `field ${className}`
   div.innerHTML = innerHTML
-  const parent = currentGroupContent ?? getUiWrapperDiv()
+  const parent = currentGroupContents ?? getWrapper()
   parent.append(div)
-  divProps.set(div, { updateValue: noop })
+  fieldProps.set(div, { updateValue: noop })
   return div
+}
+
+export const fieldHasChanged = (div: HTMLDivElement) => {
+  return frame - Number.parseInt(div.dataset.frame ?? '0') === 0
 }
 
 

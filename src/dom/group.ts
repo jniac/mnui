@@ -1,5 +1,5 @@
 import { NameArg, resolveNameArg } from '../types'
-import { getUiWrapperDiv } from './elements'
+import { currentGroupContents, getWrapper, setCurrentGroupContents } from './elements'
 
 const getLocalState = (): Record<string, any> => {
   const str = localStorage.getItem('ui-group')
@@ -10,8 +10,6 @@ const updateLocalState = (props: any) => {
   Object.assign(localState, props)
   localStorage.setItem('ui-group', JSON.stringify(localState))
 }
-
-export let currentGroupContent: HTMLDivElement | null = null
 
 export const createGroup = (name: NameArg) => {
   const { id, displayName } = resolveNameArg(name)
@@ -33,17 +31,18 @@ export const createGroup = (name: NameArg) => {
     updateLocalState({ [collapsedKey]: collapsed })
     div.classList.toggle('collapsed', collapsed)
   }
-  const parent = currentGroupContent ?? getUiWrapperDiv()
+  const parent = currentGroupContents ?? getWrapper()
   parent.append(div)
   return div
 }
 
 export const group = (name: NameArg, callback: () => void) => {
   const { id } = resolveNameArg(name)
-  const previousGroupContent = currentGroupContent
-  currentGroupContent = (
-    getUiWrapperDiv().querySelector(`div#${id}.group .contents`))
-    ?? (createGroup(name).querySelector('.contents')) as HTMLDivElement
+  const previousGroupContents = currentGroupContents
+  const newGroupContents = <HTMLDivElement>(
+    getWrapper().querySelector(`div#${id}.group .contents`))
+    ?? (createGroup(name).querySelector('.contents'))
+  setCurrentGroupContents(newGroupContents)
   callback()
-  currentGroupContent = previousGroupContent
+  setCurrentGroupContents(previousGroupContents)
 }
