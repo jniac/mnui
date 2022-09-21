@@ -1,11 +1,12 @@
 {
-  "name": "mnui",
+  "name": "@jniac/mnui",
   "version": "1.0.0",
   "description": "",
   "private": "true",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node scripts/watch.mjs",
     "build": "rollup --config rollup.config.js"
   },
   "keywords": [],
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.5.0",
     "babel-loader": "^8.2.5",
+    "chokidar": "^3.5.3",
     "rollup": "^2.79.0",
     "rollup-plugin-dts": "^4.2.2",
     "ts-loader": "^9.4.0",
