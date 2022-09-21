@@ -60,7 +60,9 @@ export const createField = (id: string, className: string, innerHTML: string) =>
 }
 
 export const fieldHasChanged = (div: HTMLDivElement) => {
-  return frame - Number.parseInt(div.dataset.frame ?? '0') === 0
+  // NOTE: one frame delay is allowed here, since we don't know which "animation frame"
+  // will be called first (the one from mnui, or the app using mnui).
+  return frame - Number.parseInt(div.dataset.frame ?? '0') <= 1
 }
 
 
