@@ -11,6 +11,7 @@ style.innerHTML = /* css */ `
 
   #mnui {
     --label-size: 140px;
+    --width: 300px;
   }
 
   #mnui {
@@ -29,7 +30,7 @@ style.innerHTML = /* css */ `
   }
 
   #mnui > .wrapper {
-    width: 280px;
+    width: var(--width);
     backdrop-filter: blur(16px) brightness(1.15);
     -webkit-backdrop-filter: blur(16px) brightness(1.15);
   }

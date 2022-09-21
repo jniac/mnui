@@ -7,7 +7,6 @@ export default [{
     dir: 'dist',
     format: 'module'
   },
-  sourcemap: true,
   plugins: [typescript({ sourceMap: true })]
 }, {
   input: 'dist/types/index.d.ts',

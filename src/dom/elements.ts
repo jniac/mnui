@@ -44,7 +44,14 @@ export const setStyle = ({
   root: Partial<CSSStyleDeclaration>
 }> = {}) => {
   if (root) {
-    Object.assign(getRoot().style, root)
+    const rootStyle = getRoot().style
+    for (const key in root) {
+      if (key.startsWith('--')) {
+        rootStyle.setProperty(key, root[key]!)
+      } else {
+        rootStyle[key] = root[key]!
+      }
+    }
   }
 }
 
