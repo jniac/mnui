@@ -2,8 +2,8 @@ const style = document.createElement('style')
 
 style.innerHTML = /* css */ `
   
-  @import url(https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.css);
-
+  @import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=block);
+  
   #mnui, #mnui * {
     position: relative;
     box-sizing: border-box;
@@ -168,7 +168,7 @@ style.innerHTML = /* css */ `
     BAD-CSS-CONFLICT ->
     Because of conflicts with some bad-css somewhere. 
   */
-    #mnui .field.button {
+  #mnui .field.button {
     border-radius: 0;
     width: unset;
     height: unset;
