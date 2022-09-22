@@ -1,6 +1,7 @@
 import { borderCss } from './border.css'
 import { fieldCss } from './field.css'
 import { rangeCss } from './range.css'
+import { toggleCss } from './toggle.css'
 
 export const mainCss = /* css */`
 
@@ -9,6 +10,7 @@ export const mainCss = /* css */`
 ${borderCss}
 ${fieldCss}
 ${rangeCss}
+${toggleCss}
 
 #mnui {
   --root-padding: 8px;
@@ -41,7 +43,7 @@ ${rangeCss}
 #mnui .group.field-focus > .label,
 #mnui .group > .label:hover,
 #mnui .field.field-focus > .label .name {
-  text-decoration: underline;
+  font-weight: 800;
 }
 
 #mnui .group > .label::after {

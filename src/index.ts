@@ -1,6 +1,7 @@
-import { group, range } from './fields'
+import { group, range, toggle } from './fields'
 
 export const mnui = {
   range,
   group,
+  toggle,
 }

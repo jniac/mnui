@@ -2,13 +2,11 @@ import { inverseLerp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from './Field'
 
-const updateValues = new Map<Field<number>, (value: number) => void>();
-
 export const range = (path: string, valueArg: InputValueArg<number> = 0, { min = 0, max = 1, step = 0 } = {}) => {
   
   const onCreate = (field: Field<number>) => {
-    const { initialValue } = resolveValueArg(valueArg)
     const { div, inputDiv } = field
+    const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('range')
     inputDiv.innerHTML = `
       <div class="range-overlay">
@@ -20,19 +18,16 @@ export const range = (path: string, valueArg: InputValueArg<number> = 0, { min =
     `
     const input = inputDiv.querySelector('input') as HTMLInputElement
     const labelInfo = div.querySelector('.label .info') as HTMLDivElement
-    const updateValue = (value: number) => {
+    field.init(initialValue, value => {
       input.value = value.toString()
       inputDiv.style.setProperty('--position', inverseLerp(min, max, value).toPrecision(4))
       labelInfo.innerHTML = `(${value.toPrecision(4)})`
-    }
-    updateValues.set(field, updateValue)
+    })
     input.oninput = () => {
       const value = Number.parseFloat(input.value)
-      updateValue(value)
       field.setValue(value, { triggerChange: true })
     }
     labelInfo.onpointerenter = () => {
-      console.log(field.value, initialValue)
       if (field.value !== initialValue) {
         labelInfo.innerHTML = `(${initialValue.toPrecision(4)})`
       }
@@ -41,21 +36,9 @@ export const range = (path: string, valueArg: InputValueArg<number> = 0, { min =
       labelInfo.innerHTML = `(${field.getValue().toPrecision(4)})`
     }
     labelInfo.onclick = () => {
-      updateValue(initialValue)
       field.setValue(initialValue, { triggerChange: true })
     }
-    updateValue(initialValue)
-    field.setValue(initialValue, { triggerChange: false })
   }
   
-  const field = Field.getOrCreate<number>(path, onCreate)
-
-  if (field.hasChanged === false) {
-    const { value } = resolveValueArg(valueArg)
-    if (field.setValue(value, { triggerChange: false })) {
-      updateValues.get(field)!(value)
-    }
-  }
-
-  return field
+  return Field.updateOrCreate<number>(path, onCreate, valueArg)
 }

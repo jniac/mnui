@@ -1,9 +1,6 @@
 export const rangeCss = /* css */`
 
 #mnui .range input[type=range] {
-  -webkit-appearance: none;     
-  padding: 0;
-  background-color: var(--color);
   opacity: 0;
 }
 

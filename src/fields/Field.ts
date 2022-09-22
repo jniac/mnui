@@ -1,3 +1,4 @@
+import { InputValueArg, resolveValueArg } from '../types'
 import { Item, Group, map, createDiv } from './items'
 
 let frame = 0
@@ -36,12 +37,22 @@ const cloneValue = <T>(value: T): T => {
   return value
 }
 
+const noop = () => {}
+
 export class Field<T> extends Item {
 
-  static getOrCreate<T>(partialPath: string, onCreate: (field: Field<T>) => void) {
+  static updateOrCreate<T>(
+    partialPath: string, 
+    onCreate: (field: Field<T>) => void,
+    valueArg: InputValueArg<T>,
+  ) {
     const path = `${Group.current?.path ?? ''}/${partialPath}`
     const field = map.get(path) as Field<T>
     if (field) {
+      if (field.hasChanged === false) {
+        const { value } = resolveValueArg(valueArg)
+        field.setValue(value, { triggerChange: false })
+      }
       return field
     } else {
       const field = new Field<T>(path)
@@ -91,6 +102,7 @@ export class Field<T> extends Item {
       return false
     }
     this.#value = cloneValue(newValue)
+    this.#updateView(this.#value)
     if (triggerChange) {
       this.#frame = frame
     }
@@ -100,4 +112,11 @@ export class Field<T> extends Item {
 
   getHasChanged() { return this.#frame === frame }
   get hasChanged() { return this.getHasChanged() }
+
+  #updateView: (value: T) => void = noop
+  init(value: T, updateView: (value: T) => void) {
+    this.#value = value
+    this.#updateView = updateView
+    updateView(this.#value!)
+  }
 }
