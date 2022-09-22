@@ -28,6 +28,10 @@ ${toggleCss}
   font-size: 10px;
   width: var(--root-width);
   color: var(--color);
+  backdrop-filter: blur(16px) brightness(1.15);
+  -webkit-backdrop-filter: blur(16px) brightness(1.15);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #mnui .group > .label {

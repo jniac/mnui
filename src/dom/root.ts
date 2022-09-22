@@ -11,7 +11,7 @@ const createRoot = () => {
   const style = document.createElement('style')
   style.innerHTML = mainCss
   style.id = 'mnui-style'
-  document.head.append(style)
+  document.head.prepend(style)
 
   return root
 }
