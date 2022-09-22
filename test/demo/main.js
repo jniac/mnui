@@ -1,29 +1,48 @@
-import { mnui } from '../../dist/index.js'
+import { THREE } from './THREE.js'
+import { getCube, getPlane } from './utils.js'
+import { vertexShader } from './glsl/vertex.glsl.js'
 
-mnui.setStyle({
-  root: {
-    '--width': '320px',
-    justifyContent: 'flex-end',
-    padding: '16px',
+const fragmentShader = `
+
+  precision mediump float;
+  precision mediump int;
+
+  varying vec3 vPosition;
+  varying vec4 vColor;
+  varying vec2 vUv;
+
+  uniform vec3 uColor;
+  
+  void main()	{
+    gl_FragColor.rgb = uColor;
+    gl_FragColor.a = 1.0;
+  }
+
+`
+
+const uniforms = {
+  uColor: { value: new THREE.Color('blue') },
+}
+
+getPlane({ 
+  size: 10,
+  material: new THREE.RawShaderMaterial({
+    uniforms,
+    vertexShader,
+    fragmentShader,
+  })
+})
+
+getCube({
+  onBeforeRender: cube => {
+    cube.rotation.x += .01
   },
 })
 
-const someState = { x: 5 }
+getCube({
+  materialColor: 'red',
+  onBeforeRender: cube => {
+    cube.rotation.y += .01
+  },
+})
 
-const render = () => {
-
-  mnui.group('My Component', () => {
-    const active = mnui.button('red?', { initialValue: true }, 'switch').value
-    document.querySelector('#value-x').style.color = active ? 'red' : 'unset'
-    someState.x = mnui.range('x', someState.x, { min: 0, max: 10 }).value
-
-    document.querySelector('#value-x').innerHTML = someState.x.toFixed(2)
-  })
-}
-
-const loop = () => {
-  requestAnimationFrame(loop)
-  render()
-}
-
-requestAnimationFrame(loop)
