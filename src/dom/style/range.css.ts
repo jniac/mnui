@@ -11,7 +11,7 @@ export const rangeCss = /* css */`
   --track-height: 3px;
   --thumb-width: var(--track-height);
   --thumb-height: 12px;
-  --thumb-padding: 1px;
+  --thumb-padding: 1.5px;
   --position: .5;
   --after-opacity: .5;
 }

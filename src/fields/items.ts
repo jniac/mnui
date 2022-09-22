@@ -1,7 +1,7 @@
 import { getOrCreateRoot } from '../dom/root'
 import { getStoreItem, setStoreItem } from '../store'
 
-const map = new Map<string, Item>()
+export const map = new Map<string, Item>()
 const idMap = new Map<string, Item>()
 
 const getIncrementalId = (id: string) => {
@@ -19,7 +19,7 @@ const getNewId = (path: string) => {
   return idMap.has(baseId) ? getIncrementalId(baseId) : baseId
 }
 
-class Item {
+export class Item {
   #id: string
   get id() { return this.#id }
 
@@ -65,7 +65,7 @@ const ensureParent = (path: string) => {
   return group
 }
 
-const createDiv = (item: Item, className: string, html: string) => {
+export const createDiv = (item: Item, className: string, html: string) => {
   const div = document.createElement('div')
   div.id = item.id
   div.className = className
@@ -117,55 +117,4 @@ export class Group extends Item {
   }
 }
 
-export class Field<T> extends Item {
 
-  static getOrCreate<T>(partialPath: string, onCreate: (field: Field<T>) => void) {
-    const path = `${Group.current?.path ?? ''}/${partialPath}`
-    const field = map.get(path) as Field<T>
-    if (field) {
-      return field
-    } else {
-      const field = new Field(path)
-      onCreate(field)
-      return field
-    }
-  }
-
-  div: HTMLDivElement
-  inputDiv: HTMLDivElement
-
-  constructor(path: string) {
-    super(path)
-
-    this.div = createDiv(this, 'field', `
-      <div class="label">
-        <span class="name">${this.name}</span>
-        <span class="info"></span>
-      </div>
-      <div class="input"></div>
-    `)
-
-    const labelName = this.div.querySelector('.label .name') as HTMLDivElement
-    labelName.onpointerenter = () => {
-      this.div.classList.add('field-focus')
-      for (const parent of this.allParents()) {
-        parent.div.classList.add('field-focus')
-      }
-    }
-    labelName.onpointerleave = () => {
-      this.div.classList.remove('field-focus')
-      for (const parent of this.allParents()) {
-        parent.div.classList.remove('field-focus')
-      }
-    }
-
-    this.inputDiv = this.div.querySelector('.input') as HTMLDivElement
-  }
-
-  #value?: T
-  getValue() { return this.#value as T }
-  setValue(newValue: T) {
-    this.#value = newValue
-  }
-  get value() { return this.getValue() }
-}

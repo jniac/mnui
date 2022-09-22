@@ -35,18 +35,21 @@ getPlane({
   })
 })
 
+let rotationSpeed = 1
+
 getCube({
   onBeforeRender: cube => {
-    const { value: speed } = mnui.range('cube/rotation speed', { initialValue: 1 }, { min: 0, max: 4 })
-    cube.rotation.x += .01 * speed
+    cube.rotation.x += .01 * rotationSpeed
+    rotationSpeed = mnui.range('cube/rotation speed', rotationSpeed, { min: 0, max: 4 }).value
   },
 })
+
 
 getCube({
   materialColor: 'red',
   onBeforeRender: cube => {
-    const { value: speed } = mnui.range('cube/rotation speed', { initialValue: 1 }, { min: 0, max: 4 })
-    cube.rotation.y += .01 * speed
+    rotationSpeed = mnui.range('cube/rotation speed 2', rotationSpeed, { min: 0, max: 4 }).value
+    cube.rotation.y += .01 * rotationSpeed
   },
 })
 
