@@ -1,6 +1,7 @@
 import { THREE } from './three/THREE.js'
 import { getCube, getPlane } from './three/utils.js'
 import { vertexShader } from './glsl/vertex.glsl.js'
+import { mnui } from '../../../dist/index.js'
 
 const fragmentShader = `
 
@@ -26,7 +27,7 @@ const uniforms = {
 
 getPlane({ 
   height: 8,
-  aspect: 2,
+  aspect: 2.5,
   material: new THREE.RawShaderMaterial({
     uniforms,
     vertexShader,
@@ -43,7 +44,16 @@ getCube({
 getCube({
   materialColor: 'red',
   onBeforeRender: cube => {
-    cube.rotation.y += .01
+    const { value:speed } = mnui.range('cube/rotation speed', { initialValue: 1 }, { min: 0, max: 4 })
+    cube.rotation.y += .01 * speed
   },
 })
 
+mnui.group('shader', () => {
+  mnui.range('x')
+  mnui.range('x')
+  mnui.range('cube/foo/lol', { initialValue: 2 }).value
+})
+
+mnui.range('shader-2/position', { initialValue: 2 })
+mnui.range('shader/position', { initialValue: 2 })
