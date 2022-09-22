@@ -1,4 +1,4 @@
-import styleCss from './style/main.css'
+import { mainCss } from './style/main.css'
 
 let root: HTMLDivElement | null = null
 
@@ -9,7 +9,7 @@ const createRoot = () => {
   document.body.appendChild(root)
 
   const style = document.createElement('style')
-  style.innerHTML = styleCss
+  style.innerHTML = mainCss
   style.id = 'mnui-style'
   document.head.append(style)
 

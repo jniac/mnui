@@ -119,40 +119,53 @@ export class Group extends Item {
 
 export class Field<T> extends Item {
 
-  static getOrCreate<T>(partialPath: string) {
+  static getOrCreate<T>(partialPath: string, onCreate: (field: Field<T>) => void) {
     const path = `${Group.current?.path ?? ''}/${partialPath}`
-    return map.get(path) as Field<T> ?? new Field(path)
+    const field = map.get(path) as Field<T>
+    if (field) {
+      return field
+    } else {
+      const field = new Field(path)
+      onCreate(field)
+      return field
+    }
   }
 
   div: HTMLDivElement
-  contentDiv: HTMLDivElement
+  inputDiv: HTMLDivElement
 
   constructor(path: string) {
     super(path)
 
     this.div = createDiv(this, 'field', `
       <div class="label">
-        <span>${this.name}</span>
+        <span class="name">${this.name}</span>
+        <span class="info"></span>
       </div>
-      <div class="content"></div>
+      <div class="input"></div>
     `)
 
-    const label = this.div.querySelector('.label') as HTMLDivElement
-    label.onpointerenter = () => {
+    const labelName = this.div.querySelector('.label .name') as HTMLDivElement
+    labelName.onpointerenter = () => {
+      this.div.classList.add('field-focus')
       for (const parent of this.allParents()) {
         parent.div.classList.add('field-focus')
       }
     }
-    label.onpointerleave = () => {
+    labelName.onpointerleave = () => {
+      this.div.classList.remove('field-focus')
       for (const parent of this.allParents()) {
         parent.div.classList.remove('field-focus')
       }
     }
 
-    this.contentDiv = this.div.querySelector('.content') as HTMLDivElement
+    this.inputDiv = this.div.querySelector('.input') as HTMLDivElement
   }
-}
 
-export class Range extends Field<number> {
-  
+  #value?: T
+  getValue() { return this.#value as T }
+  setValue(newValue: T) {
+    this.#value = newValue
+  }
+  get value() { return this.getValue() }
 }

@@ -1,4 +1,4 @@
-export const border = /* css */`
+export const borderCss = /* css */`
 
 #mnui {
   border: solid 1px var(--color);

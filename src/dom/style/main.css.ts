@@ -1,16 +1,20 @@
-import { border } from './border.css'
+import { borderCss } from './border.css'
+import { fieldCss } from './field.css'
+import { rangeCss } from './range.css'
 
-export default /* css */`
+export const mainCss = /* css */`
 
 @import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=block);
 
-${border}
+${borderCss}
+${fieldCss}
+${rangeCss}
 
 #mnui {
   --root-padding: 8px;
   --root-width: 320px;
-  --input-width: 160px;
-  --line-height: 28px;
+  --input-width: 120px;
+  --line-height: 24px;
   --color: white;
 }
 
@@ -19,7 +23,7 @@ ${border}
   top: var(--root-padding);
   left: var(--root-padding);
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
+  font-size: 10px;
   width: var(--root-width);
   color: var(--color);
 }
@@ -36,7 +40,7 @@ ${border}
 
 #mnui .group.field-focus > .label,
 #mnui .group > .label:hover,
-#mnui .field > .label:hover {
+#mnui .field.field-focus > .label .name {
   text-decoration: underline;
 }
 
@@ -63,18 +67,6 @@ ${border}
 
 #mnui .group.collapsed > .content {
   display: none;
-}
-
-#mnui .field {
-  height: var(--line-height);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#mnui .field .label {
-  padding-left: 12px;
-  cursor: none;
 }
 
 `
