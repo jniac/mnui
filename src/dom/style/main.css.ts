@@ -1,12 +1,16 @@
+import { border } from './border.css'
+
 export default /* css */`
 
 @import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=block);
+
+${border}
 
 #mnui {
   --root-padding: 8px;
   --root-width: 320px;
   --input-width: 160px;
-  --line-height: 24px;
+  --line-height: 28px;
   --color: white;
 }
 
@@ -18,7 +22,6 @@ export default /* css */`
   font-size: 12px;
   width: var(--root-width);
   color: var(--color);
-  border: solid 1px var(--color);
 }
 
 #mnui .group > .label {
@@ -31,16 +34,18 @@ export default /* css */`
   padding-left: 16px;
 }
 
-#mnui .group > .label:hover {
+#mnui .group.field-focus > .label,
+#mnui .group > .label:hover,
+#mnui .field > .label:hover {
   text-decoration: underline;
 }
 
 #mnui .group > .label::after {
-  --size: 8px;
+  --size: 6px;
   content: '';
   position: absolute;
   top: calc((var(--line-height) - var(--size)) / 2);
-  left: 4px;
+  left: 6px;
   width: var(--size);
   height: var(--size);
   background-color: currentColor;
@@ -49,13 +54,7 @@ export default /* css */`
 }
 
 #mnui .group > .content {
-  border-top: solid 1px var(--color);
   padding-left: 4px;
-}
-
-#mnui .group + .group,
-#mnui .group > .content > * + * {
-  border-top: solid 1px var(--color);
 }
 
 #mnui .group.collapsed > .label::after {
@@ -74,7 +73,8 @@ export default /* css */`
 }
 
 #mnui .field .label {
-  padding-left: 4px;
+  padding-left: 12px;
+  cursor: none;
 }
 
 `

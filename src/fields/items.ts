@@ -40,6 +40,14 @@ class Item {
     map.set(this.#path, this)
     idMap.set(this.#id, this)
   }
+
+  *allParents() {
+    let item = this.#parent
+    while (item) {
+      yield item
+      item = item.parent
+    }
+  }
 }
 
 const ensureParent = (path: string) => {
@@ -128,6 +136,18 @@ export class Field<T> extends Item {
       </div>
       <div class="content"></div>
     `)
+
+    const label = this.div.querySelector('.label') as HTMLDivElement
+    label.onpointerenter = () => {
+      for (const parent of this.allParents()) {
+        parent.div.classList.add('field-focus')
+      }
+    }
+    label.onpointerleave = () => {
+      for (const parent of this.allParents()) {
+        parent.div.classList.remove('field-focus')
+      }
+    }
 
     this.contentDiv = this.div.querySelector('.content') as HTMLDivElement
   }

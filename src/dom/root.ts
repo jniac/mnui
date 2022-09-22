@@ -1,4 +1,4 @@
-import styleCss from './style.css'
+import styleCss from './style/main.css'
 
 let root: HTMLDivElement | null = null
 
