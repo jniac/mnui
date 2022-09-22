@@ -21,7 +21,7 @@ const sun = new THREE.DirectionalLight()
 sun.position.set(10, 20, 3)
 scene.add(sun)
 
-camera.position.set(0, 0, 5)
+camera.position.set(0, 0, 2.5)
 
 const animate = () => {
   requestAnimationFrame(animate)
