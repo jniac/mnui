@@ -17,5 +17,11 @@ const renderLoop = () => {
 }
 ```
 
+## Dev
+```
+yarn start
+```
+
 ## Note
-Use [Fira Code](https://github.com/tonsky/FiraCode) from [google fonts](https://fonts.google.com/specimen/Fira+Code?query=fira+code) for UI rendering.
+- Minimal ES version: 2015 (using private identifier)
+- Use [Fira Code](https://github.com/tonsky/FiraCode) from [google fonts](https://fonts.google.com/specimen/Fira+Code?query=fira+code) for UI rendering.
