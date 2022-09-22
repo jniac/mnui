@@ -51,15 +51,30 @@ export const getCube = ({
 }
 
 export const getPlane = ({
-  size = 1,
-  width = size,
-  height = size,
+  size = NaN,
+  aspect = NaN,
+  width = NaN,
+  height = NaN,
   materialColor = '#fc0',
   material = getEmissiveMaterial({
     color: materialColor,
   }),
   ...transformProps
 } = {}) => {
+  if (Number.isNaN(size) && Number.isFinite(aspect)) {
+    if (Number.isNaN(width) && Number.isNaN(height)) {
+      size = 1
+    }
+    else if (Number.isFinite(height)) {
+      width = height * aspect
+    } else {
+      height = width / aspect
+    }
+  }
+  if (Number.isFinite(size) && Number.isFinite(aspect) && Number.isNaN(width) && Number.isNaN(height)) {
+    width = Math.sqrt(size * size * aspect)
+    height = Math.sqrt(size * size / aspect)
+  }
   const geometry = new THREE.PlaneGeometry(width, height)
   return applyTransform(new THREE.Mesh(geometry, material), transformProps)
 }

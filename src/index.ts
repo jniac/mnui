@@ -1,6 +1,6 @@
-import { range } from './input/range'
-import { button } from './input/button'
-import { buttons } from './input/buttons'
+import { range } from './fields/range'
+import { button } from './fields/button'
+import { buttons } from './fields/buttons'
 import { group, setStyle } from './dom'
 
 export const mnui = {

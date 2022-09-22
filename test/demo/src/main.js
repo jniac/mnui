@@ -1,5 +1,5 @@
-import { THREE } from './THREE.js'
-import { getCube, getPlane } from './utils.js'
+import { THREE } from './three/THREE.js'
+import { getCube, getPlane } from './three/utils.js'
 import { vertexShader } from './glsl/vertex.glsl.js'
 
 const fragmentShader = `
@@ -25,7 +25,8 @@ const uniforms = {
 }
 
 getPlane({ 
-  size: 10,
+  height: 8,
+  aspect: 2,
   material: new THREE.RawShaderMaterial({
     uniforms,
     vertexShader,
