@@ -27,10 +27,12 @@ const isEquivalent = (a: any, b: any): boolean => {
   return true
 }
 
-const copyValueTo = <T extends object>(source: T, destination: T): T => {
-  for (const key in source) {
-    if (source.hasOwnProperty(key)) {
-      destination[key] = source[key]
+const copyValueTo = <T>(source: T, destination: T): T => {
+  if (typeof source === 'object') {
+    for (const key in source) {
+      if (source.hasOwnProperty(key)) {
+        destination[key] = source[key]
+      }
     }
   }
   return destination
@@ -50,12 +52,12 @@ const cloneValue = <T>(value: T): T => {
   return value
 }
 
-const noop = () => {}
+const noop = () => { }
 
 export class Field<T> extends Item {
 
   static updateOrCreate<T>(
-    partialPath: string, 
+    partialPath: string,
     onCreate: (field: Field<T>) => void,
     valueArg: InputValueArg<T>,
   ) {
@@ -74,9 +76,12 @@ export class Field<T> extends Item {
     }
   }
 
+  #value!: T
+  #initialValueObjectRef!: T
+  #isObject!: boolean
   #frame = 0
-  get frame() { return this.#frame }
-
+  #updateView: (value: T) => void = noop
+  
   div: HTMLDivElement
   inputDiv: HTMLDivElement
 
@@ -108,20 +113,20 @@ export class Field<T> extends Item {
     this.inputDiv = this.div.querySelector('.input') as HTMLDivElement
   }
 
-  #isObject!: boolean
-  get isObject() { return this.#isObject }
+  getValue() { return this.#value }
+  
+  cloneValue() { return cloneValue(this.#value) }
 
-  #initialValueObjectRef?: T
-  #value?: T
-  getValue() { return cloneValue(this.#value as T) }
   setValue(newValue: T, { triggerChange }: { triggerChange: boolean }): boolean {
     if (isEquivalent(newValue, this.#value)) {
       return false
     }
-    this.#value = newValue
-    // If value is an object, update the original value reference:
     if (this.#isObject) {
-      copyValueTo(this.#value as object, this.#initialValueObjectRef as object)
+      // If value is an object, update the original value reference:
+      copyValueTo(newValue, this.#value)
+      copyValueTo(newValue, this.#initialValueObjectRef)
+    } else {
+      this.#value = newValue
     }
     this.#updateView(this.#value)
     if (triggerChange) {
@@ -129,12 +134,13 @@ export class Field<T> extends Item {
     }
     return true
   }
-  get value() { return this.getValue() }
+
+  setUserValue(newValue: T) {
+    this.setValue(newValue, { triggerChange: true })
+  }
 
   getHasChanged() { return this.#frame === frame }
-  get hasChanged() { return this.getHasChanged() }
 
-  #updateView: (value: T) => void = noop
   init(value: T, updateView: (value: T) => void) {
     this.#value = cloneValue(value)
     this.#initialValueObjectRef = value
@@ -142,4 +148,9 @@ export class Field<T> extends Item {
     this.#updateView = updateView
     updateView(this.#value!)
   }
+
+  get frame() { return this.#frame }
+  get value() { return this.cloneValue() }
+  get isObject() { return this.#isObject }
+  get hasChanged() { return this.getHasChanged() }
 }

@@ -17,7 +17,7 @@ ${vectorCss}
 #mnui {
   --root-padding: 8px;
   --root-width: 320px;
-  --input-width: 120px;
+  --input-width: 160px;
   --line-height: 24px;
   --color: white;
 }

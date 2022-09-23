@@ -9,15 +9,20 @@ export const fieldCss = /* css */`
 }
 
 #mnui .field > .label {
+  margin-right: 8px;
   flex: 1;
   padding-left: 12px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  overflow: hidden;
 }
 
 #mnui .field > .label > .name {
+  overflow: hidden;
+  white-space: nowrap;
   cursor: none;
+  text-overflow: ellipsis;
 }
 
 #mnui .field > .input {

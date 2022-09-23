@@ -9,11 +9,15 @@ export const applyTransform = (target = new THREE.Object3D(), {
   rotationX = target.rotation.x * 180 / Math.PI,
   rotationY = target.rotation.y * 180 / Math.PI,
   rotationZ = target.rotation.z * 180 / Math.PI,
+  onUpdate = null,
   onBeforeRender = null,
   onAfterRender = null,
 }) => {
   target.position.set(x, y, z)
   target.rotation.set(rotationX * Math.PI / 180, rotationY * Math.PI / 180, rotationZ * Math.PI / 180)
+  if (onUpdate) {
+    target.onUpdate = () => onUpdate(target, camera, renderer)
+  }
   if (onBeforeRender) {
     target.onBeforeRender = () => onBeforeRender(target, camera, renderer)
   }

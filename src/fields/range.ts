@@ -25,7 +25,7 @@ export const range = (path: string, valueArg: InputValueArg<number> = 0, { min =
     })
     input.oninput = () => {
       const value = Number.parseFloat(input.value)
-      field.setValue(value, { triggerChange: true })
+      field.setUserValue(value)
     }
     labelInfo.onpointerenter = () => {
       if (field.value !== initialValue) {
@@ -36,7 +36,7 @@ export const range = (path: string, valueArg: InputValueArg<number> = 0, { min =
       labelInfo.innerHTML = `(${field.getValue().toPrecision(4)})`
     }
     labelInfo.onclick = () => {
-      field.setValue(initialValue, { triggerChange: true })
+      field.setUserValue(initialValue)
     }
   }
   

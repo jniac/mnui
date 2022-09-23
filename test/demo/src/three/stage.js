@@ -26,6 +26,10 @@ camera.position.set(0, 0, 2.5)
 const animate = () => {
   requestAnimationFrame(animate)
 
+  scene.traverse(child => {
+    child.onUpdate?.()
+  })
+
   renderer.render(scene, camera)
 }
 

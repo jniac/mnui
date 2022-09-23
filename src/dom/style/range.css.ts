@@ -13,15 +13,13 @@ export const rangeCss = /* css */`
   --after-opacity: .5;
 }
 
-#mnui .range .info {
-  margin-left: 8px;
-  opacity: .66;
-}
 
 #mnui .range > .label > .info {
+  margin-left: 4px;
+  opacity: .66;
   cursor: pointer;
+  font-size: .8em;
 }
-
 
 #mnui .range .range-overlay {
   position: absolute;

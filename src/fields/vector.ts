@@ -1,6 +1,7 @@
-import { inverseLerp } from '../math'
+import { clamp, inverseLerp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from './Field'
+import { onDrag } from '../event/drag'
 
 type Vector = Record<string, number>
 
@@ -12,70 +13,6 @@ const cleanNumberInputString = (value: string) => {
     value = value.slice(0, secondDotIndex)
   }
   return value
-}
-
-type DragInfo = {
-  position: { x: number, y: number }
-  positionOld: { x: number, y: number }
-  positionDelta: { x: number, y: number }
-  shiftKey: boolean
-  altKey: boolean
-  metaKey: boolean
-  ctrlKey: boolean
-}
-
-const onDrag = (element: HTMLElement, callback: (info: DragInfo) => void) => {
-  const info: DragInfo = {
-    position: { x: 0, y: 0 },
-    positionOld: { x: 0, y: 0 },
-    positionDelta: { x: 0, y: 0 },
-    shiftKey: false,
-    altKey: false,
-    metaKey: false,
-    ctrlKey: false,
-  }
-  let pointerEvent: PointerEvent
-  const onDown = (event: PointerEvent) => {
-    window.addEventListener('pointermove', onMove)
-    window.addEventListener('pointerup', onUp)
-    info.position.x = event.x
-    info.position.y = event.y
-    info.positionOld.x = event.x
-    info.positionOld.y = event.y
-    pointerEvent = event
-    loopId = requestAnimationFrame(loop)
-  }
-  const onMove = (event: PointerEvent) => {
-    pointerEvent = event
-  }
-  const onUp = () => {
-    window.removeEventListener('pointermove', onMove)
-    window.removeEventListener('pointerup', onUp)
-    cancelAnimationFrame(loopId)
-  }
-  let loopId = -1
-  const loop = () => {
-    loopId = requestAnimationFrame(loop)
-    info.positionOld.x = info.position.x
-    info.positionOld.y = info.position.y
-    info.position.x = pointerEvent.x
-    info.position.y = pointerEvent.y
-    info.positionDelta.x = info.position.x - info.positionOld.x
-    info.positionDelta.y = info.position.y - info.positionOld.y
-    info.shiftKey = pointerEvent.shiftKey
-    info.altKey = pointerEvent.altKey
-    info.metaKey = pointerEvent.metaKey
-    info.ctrlKey = pointerEvent.ctrlKey
-    callback(info)
-  }
-  element.addEventListener('pointerdown', onDown)
-  const destroy = () => {
-    element.removeEventListener('pointerdown', onDown)
-    window.removeEventListener('pointermove', onMove)
-    window.removeEventListener('pointerup', onUp)
-    cancelAnimationFrame(loopId)
-  }
-  return { destroy }
 }
 
 export const vector = (path: string, valueArg: InputValueArg<Vector>, { min = -Infinity, max = Infinity, step = 1 } = {}) => {
@@ -105,15 +42,16 @@ export const vector = (path: string, valueArg: InputValueArg<Vector>, { min = -I
         if (cleanString !== input.value) {
           input.value = cleanString
         }
-        const subValue = Number.parseFloat(cleanString)
-        const value = field.value
+        const subValue = clamp(Number.parseFloat(cleanString), min, max)
+        const value = field.cloneValue()
         value[key] = subValue
-        field.setValue(value, { triggerChange: true })
+        field.setUserValue(value)
       }
       onDrag(label, info => {
-        const value = field.value
-        value[key] += info.positionDelta.x * (info.shiftKey ? 10 : info.altKey ? .1 : 1) * step
-        field.setValue(value, { triggerChange: true })
+        const value = field.cloneValue()
+        const delta = info.positionDelta.x * (info.shiftKey ? 10 : info.altKey ? .1 : 1) * step
+        value[key] = clamp(value[key] + delta, min, max)
+        field.setUserValue(value)
       })
       return { key, input }
     })

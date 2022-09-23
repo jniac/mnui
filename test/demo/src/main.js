@@ -39,24 +39,27 @@ let autoRotate = true
 let rotationSpeed = 1
 
 getCube({
-  onBeforeRender: cube => {
-    if (autoRotate) {
-      cube.rotation.x += .01 * rotationSpeed
-    }
-    autoRotate = mnui.toggle('cube/auto rotate', autoRotate).value
-    autoRotate = mnui.toggle('cube/auto rotate 2', autoRotate).value
-    rotationSpeed = mnui.range('cube/rotation speed', rotationSpeed, { min: 0, max: 4 }).value
-    rotationSpeed = mnui.range('cube/rotation speed 2', rotationSpeed, { min: 0, max: 4 }).value
-
-    Object.assign(window, { cubePosition: cube.position })
-    mnui.vector('cube/position', cube.position)
+  onUpdate: cube => {
+    mnui.group('painful cube', () => {
+      if (autoRotate) {
+        cube.rotation.x += .01 * rotationSpeed
+      }
+      autoRotate = mnui.toggle('auto rotate', autoRotate).value
+      autoRotate = mnui.toggle('auto rotate 2', autoRotate).value
+      rotationSpeed = mnui.range('rotation speed', rotationSpeed, { min: 0, max: 4 }).value
+      rotationSpeed = mnui.range('rotation speed 2', rotationSpeed, { min: 0, max: 4 }).value
+  
+      Object.assign(window, { cubePosition: cube.position })
+      mnui.vector('position', cube.position, { step: .1 })
+      mnui.vector('position (-1,1) with a very long name', cube.position, { min: -1, max: 1, step: .05 })
+    })
   },
 })
 
 
 getCube({
   materialColor: 'red',
-  onBeforeRender: cube => {
+  onUpdate: cube => {
     if (autoRotate) {
       cube.rotation.y += .01 * rotationSpeed
     }
