@@ -5,6 +5,8 @@ import { onDrag } from '../event/drag'
 
 type Vector = Record<string, number>
 
+const identity = <T>(value: T) => value
+
 const cleanNumberInputString = (value: string) => {
   value = value.replace(/[^\d\.]/g, '')
   const dotIndex = value.indexOf('.')
@@ -15,20 +17,31 @@ const cleanNumberInputString = (value: string) => {
   return value
 }
 
-export const vector = (path: string, valueArg: InputValueArg<Vector>, { min = -Infinity, max = Infinity, step = 1 } = {}) => {
+export const vector = (
+  path: string, 
+  valueArg: InputValueArg<Vector>, 
+  { 
+    min = -Infinity, 
+    max = Infinity, 
+    step = 1,
+    keys = null as string[] | null,
+    keyMap = {} as Record<string, string>,
+    map = [identity, identity] as [(x: number) => number, (x: number) => number]
+  } = {},
+) => {
   
   const onCreate = (field: Field<Vector>) => {
     const { div, inputDiv } = field
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('vector')
-    const keys = Object.keys(initialValue).filter(key => typeof initialValue[key] === 'number')
+    keys ??= Object.keys(initialValue).filter(key => typeof initialValue[key] === 'number')
     const subFields = keys.map(key => {
       const id = `${field.id}-${key}`
       const subDiv = document.createElement('div')
       subDiv.classList.add('vector-property')
       subDiv.innerHTML = `
         <div class="vector-label">
-          <label for="${id}">${key}</label>
+          <label for="${id}">${keyMap[key] ?? key}</label>
         </div>
         <div class="vector-input">
           <input id="${id}" value="${initialValue[key]}">
@@ -42,7 +55,7 @@ export const vector = (path: string, valueArg: InputValueArg<Vector>, { min = -I
         if (cleanString !== input.value) {
           input.value = cleanString
         }
-        const subValue = clamp(Number.parseFloat(cleanString), min, max)
+        const subValue = clamp(map[1](Number.parseFloat(cleanString)), min, max)
         const value = field.cloneValue()
         value[key] = subValue
         field.setUserValue(value)
@@ -57,7 +70,10 @@ export const vector = (path: string, valueArg: InputValueArg<Vector>, { min = -I
     })
     field.init(initialValue, value => {
       for (const { key, input } of subFields) {
-        input.value = value[key].toString()
+        // NOTE: Do not update focused input!
+        if (document.activeElement !== input) {
+          input.value = map[0](value[key]).toString()
+        }
       }
     })
   }

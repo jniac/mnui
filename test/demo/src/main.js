@@ -36,22 +36,41 @@ getPlane({
 })
 
 let autoRotate = true
+let autoMove = true
 let rotationSpeed = 1
+let positionTime = 0
 
 getCube({
   onUpdate: cube => {
     mnui.group('painful cube', () => {
-      if (autoRotate) {
-        cube.rotation.x += .01 * rotationSpeed
-      }
+      Object.assign(window, { cube })
+
+      autoMove = mnui.toggle('auto move', autoMove).value
       autoRotate = mnui.toggle('auto rotate', autoRotate).value
       autoRotate = mnui.toggle('auto rotate 2', autoRotate).value
       rotationSpeed = mnui.range('rotation speed', rotationSpeed, { min: 0, max: 4 }).value
       rotationSpeed = mnui.range('rotation speed 2', rotationSpeed, { min: 0, max: 4 }).value
-  
-      Object.assign(window, { cubePosition: cube.position })
+
+      if (autoMove) {
+        positionTime += 1 / 60
+        cube.position.y += Math.cos(positionTime) * .01
+      }
+      if (autoRotate) {
+        cube.rotation.x += .01 * rotationSpeed
+      }
+
       mnui.vector('position', cube.position, { step: .1 })
       mnui.vector('position (-1,1) with a very long name', cube.position, { min: -1, max: 1, step: .05 })
+      mnui.vector('rotation raw', cube.rotation)
+      mnui.vector('rotation map', cube.rotation, { keyMap: { '_x': 'x', '_y': 'y', '_z': 'z' } })
+      mnui.vector('rotation degree', cube.rotation, { 
+        step: .1,
+        keys: ['x', 'y', 'z'],
+        map: [
+          x => x * 180 / Math.PI, 
+          x => x * Math.PI / 180,
+        ],
+      })
     })
   },
 })

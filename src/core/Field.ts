@@ -91,7 +91,7 @@ export class Field<T> extends Item {
   }
 
   setUserValue(newValue: T) {
-    this.setValue(newValue, { triggerChange: true })
+    return this.setValue(newValue, { triggerChange: true })
   }
 
   getHasChanged() { return this.#frame === frame }
