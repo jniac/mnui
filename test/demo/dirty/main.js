@@ -1,6 +1,6 @@
-import { THREE } from './three/THREE.js'
-import { getCube, getPlane } from './three/utils.js'
-import { vertexShader } from './glsl/vertex.glsl.js'
+import { THREE } from '../src/three/THREE.js'
+import { getCube, getPlane } from '../src/three/utils.js'
+import { vertexShader } from '../src/glsl/vertex.glsl.js'
 import { mnui } from '../../../dist/index.js'
 
 const fragmentShader = `
