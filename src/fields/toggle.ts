@@ -1,18 +1,18 @@
 import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from '../core/Field'
 
-const getSvg = ({
+const getSvg = (id: string, {
   width = 32,
   height = 16,
 } = {}) => {
   return `
     <div class="toggle-overlay">
       <svg width="${width}" height="${height}">
-        <mask id="mask">
+        <mask id="${id}">
           <rect width="${width}" height="${height}" fill="white" />
           <circle cx="${height / 2}" cy="${height / 2}" r="${height / 2 - 1}" fill="black" />
         </mask>
-        <rect width="${width}" height="${height}" rx="${height / 2}" mask="url(#mask)" />
+        <rect width="${width}" height="${height}" rx="${height / 2}" mask="url(#${id})" />
       </svg>
     </div>
   `
@@ -26,7 +26,7 @@ export const toggle = (path: string, valueArg: InputValueArg<boolean> = true) =>
     const width = 24, height = 14
     div.classList.add('toggle')
     inputDiv.innerHTML = `
-      ${getSvg({ width, height })}
+      ${getSvg(`${field.id}-svg`, { width, height })}
       <input type="checkbox">
     `
     const svg = inputDiv.querySelector('svg') as SVGSVGElement
@@ -36,7 +36,7 @@ export const toggle = (path: string, valueArg: InputValueArg<boolean> = true) =>
       circle.setAttributeNS(null, 'cx', (value ? width - height / 2 : height / 2).toString())
     })
     inputDiv.onclick = () => {
-      field.setValue(!field.value, { triggerChange: true })
+      field.setUserValue(!field.value)
     }
   }
 
