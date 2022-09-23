@@ -9,14 +9,14 @@ export const resolveValueArg = <T>(arg: InputValueArg<T>, currentValue?: T): { v
     const [initialValue, value] = arg
     return { value, initialValue }
   }
-  if (arg && (typeof arg === 'object')) {
+  if (arg && (typeof arg === 'object') && arg.constructor === Object) {
     if ('value' in arg) {
       const { value, initialValue = value } = arg as { value: T; initialValue?: T} 
       return { value, initialValue }
-    } else {
+    } else if ('initialValue' in arg) {
       const { initialValue } = arg as { initialValue: T} 
       return { value: currentValue ?? initialValue, initialValue }
     }
   }
-  return { value: arg, initialValue: arg }
+  return { value: arg as T, initialValue: arg as T }
 }

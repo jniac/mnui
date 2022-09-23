@@ -17,12 +17,23 @@ const isEquivalent = (a: any, b: any): boolean => {
   if (typeA !== 'object') {
     return a === b
   }
-  for (const key of Object.keys(a)) {
-    if (isEquivalent(a[key], b[key]) === false) {
-      return false
+  for (const key in a) {
+    if (a.hasOwnProperty(key)) {
+      if (isEquivalent(a[key], b[key]) === false) {
+        return false
+      }
     }
   }
   return true
+}
+
+const copyValueTo = <T extends object>(source: T, destination: T): T => {
+  for (const key in source) {
+    if (source.hasOwnProperty(key)) {
+      destination[key] = source[key]
+    }
+  }
+  return destination
 }
 
 const cloneValue = <T>(value: T): T => {
@@ -30,7 +41,9 @@ const cloneValue = <T>(value: T): T => {
     // @ts-ignore
     const clone = new value.constructor()
     for (const key in value) {
-      clone[key] = value[key]
+      if (value.hasOwnProperty(key)) {
+        clone[key] = value[key]
+      }
     }
     return clone
   }
@@ -95,13 +108,21 @@ export class Field<T> extends Item {
     this.inputDiv = this.div.querySelector('.input') as HTMLDivElement
   }
 
+  #isObject!: boolean
+  get isObject() { return this.#isObject }
+
+  #initialValueObjectRef?: T
   #value?: T
-  getValue() { return this.#value as T }
+  getValue() { return cloneValue(this.#value as T) }
   setValue(newValue: T, { triggerChange }: { triggerChange: boolean }): boolean {
     if (isEquivalent(newValue, this.#value)) {
       return false
     }
-    this.#value = cloneValue(newValue)
+    this.#value = newValue
+    // If value is an object, update the original value reference:
+    if (this.#isObject) {
+      copyValueTo(this.#value as object, this.#initialValueObjectRef as object)
+    }
     this.#updateView(this.#value)
     if (triggerChange) {
       this.#frame = frame
@@ -115,7 +136,9 @@ export class Field<T> extends Item {
 
   #updateView: (value: T) => void = noop
   init(value: T, updateView: (value: T) => void) {
-    this.#value = value
+    this.#value = cloneValue(value)
+    this.#initialValueObjectRef = value
+    this.#isObject = typeof value === 'object'
     this.#updateView = updateView
     updateView(this.#value!)
   }

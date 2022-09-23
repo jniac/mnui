@@ -2,6 +2,7 @@ import { borderCss } from './border.css'
 import { fieldCss } from './field.css'
 import { rangeCss } from './range.css'
 import { toggleCss } from './toggle.css'
+import { vectorCss } from './vector.css'
 
 export const mainCss = /* css */`
 
@@ -11,6 +12,7 @@ ${borderCss}
 ${fieldCss}
 ${rangeCss}
 ${toggleCss}
+${vectorCss}
 
 #mnui {
   --root-padding: 8px;

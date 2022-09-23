@@ -47,6 +47,9 @@ getCube({
     autoRotate = mnui.toggle('cube/auto rotate 2', autoRotate).value
     rotationSpeed = mnui.range('cube/rotation speed', rotationSpeed, { min: 0, max: 4 }).value
     rotationSpeed = mnui.range('cube/rotation speed 2', rotationSpeed, { min: 0, max: 4 }).value
+
+    Object.assign(window, { cubePosition: cube.position })
+    mnui.vector('cube/position', cube.position)
   },
 })
 

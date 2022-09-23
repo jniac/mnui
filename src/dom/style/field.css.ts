@@ -25,6 +25,7 @@ export const fieldCss = /* css */`
   display: flex;
   flex-direction: row;
   align-items: center;
+  overflow: hidden;
 }
 
 #mnui .field > .input > * {
