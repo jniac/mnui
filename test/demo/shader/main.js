@@ -1,9 +1,32 @@
 import { THREE } from '../src/three/THREE.js'
 import { getPlane } from '../src/three/utils.js'
-import { vertexShader } from '../src/glsl/vertex.glsl.js'
 import { glsl_utils, glsl_easings, glsl_iq_noise } from '../src/glsl/utils/index.js'
 import { mnui } from '../../../dist/index.js'
 import { camera } from '../src/three/stage.js'
+
+
+const vertexShader = /* glsl */`
+
+  precision mediump float;
+  precision mediump int;
+
+  attribute vec4 color;
+
+  varying vec3 vPosition;
+  varying vec4 vColor;
+  varying vec2 vUv;
+
+  void main()	{
+
+    vPosition = position;
+    vColor = color;
+    vUv = uv;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+  }
+
+`
 
 const fragmentShader = /* glsl */`
 
@@ -25,6 +48,7 @@ uniform float uTime;
 uniform vec4 uSize;
 uniform vec4 uParam1;
 uniform vec4 uTransform1;
+uniform float uAliasThreshold;
 
 varying vec3 vPosition;
 varying vec4 vColor;
@@ -53,7 +77,7 @@ float sinRamp(vec2 uv) {
   float x1 = (uv.y * 8.0);
   float x2= x1 - sin(uv.x * 8.0);
 
-  const float a = 0.02;
+  float a = fwidth(x1) * 0.5 * uAliasThreshold;
   x2 /= 4.0;
 
   if (x2 < a) {
@@ -86,6 +110,7 @@ const uniforms = {
   uSize: { value: new THREE.Vector4(window.innerWidth, window.innerHeight, window.innerWidth / window.innerHeight) },
   uParam1: { value: new THREE.Vector4() },
   uTransform1: { value: new THREE.Vector4(1, 1, 0, 0) },
+  uAliasThreshold: { value: 1 },
 }
 
 camera.position.set(0, 0, 1)
@@ -93,11 +118,13 @@ camera.position.set(0, 0, 1)
 getPlane({ 
   height: 8,
   aspect: 2.5,
-  material: new THREE.RawShaderMaterial({
+  material: new THREE.ShaderMaterial({
     uniforms,
     vertexShader,
     fragmentShader,
   })
 })
 
-mnui.vector('transform', uniforms.uTransform1.value, { step: .1, localStorage: true })
+mnui.vector('transform', uniforms.uTransform1.value, { step: .1 })
+mnui.range('alias threshold', { initialValue: 1 }, { min: 0, max: 10 })
+  .onUserChange(value => uniforms.uAliasThreshold.value = value)

@@ -75,6 +75,15 @@ getCube({
   },
 })
 
+mnui.vector('rotation free', { initialValue: new THREE.Euler(Math.PI, Math.PI / 2, 0) }, {
+  step: .1,
+  keys: ['x', 'y', 'z'],
+  map: [
+    x => x * 180 / Math.PI, 
+    x => x * Math.PI / 180,
+  ],
+})
+
 
 getCube({
   materialColor: 'red',
