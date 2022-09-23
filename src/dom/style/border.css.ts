@@ -29,6 +29,7 @@ export const borderCss = /* css */`
   position: absolute;
   left: var(--padding);
   right: var(--padding);
+  width: unset;
   height: 1px;
   top: 0;
   background-color: var(--color);
@@ -38,16 +39,17 @@ export const borderCss = /* css */`
 
 
 /* FIELD / GROUP */
-#mnui .group > .content > * + * {
+#mnui .item + .item {
   border-top: solid 1px transparent;
 }
 
-#mnui .group > .content > * + *::before {
+#mnui .item + .item::before {
   --padding: 4px;
   content: '';
   position: absolute;
-  left: calc(var(--padding) + 8px);
+  left: var(--padding-left);
   right: var(--padding);
+  width: unset;
   height: 1px;
   top: 0;
   background-color: var(--color);

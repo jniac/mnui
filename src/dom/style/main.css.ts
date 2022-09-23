@@ -32,6 +32,7 @@ ${vectorCss}
   --active-color: gold;
   --none-hover-opacity: .75;
   --hover-transition: .15s ease-out;
+  --padding-left: 4px;
 }
 
 #mnui {

@@ -49,7 +49,7 @@ export class Field<T> extends Item {
   constructor(path: string) {
     super(path)
 
-    this.div = createDiv(this, 'field', `
+    this.div = createDiv(this, 'item field', `
       <div class="label">
         <span class="name">${this.name}</span>
         <span class="info"></span>

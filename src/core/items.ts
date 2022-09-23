@@ -98,7 +98,7 @@ export class Group extends Item {
   constructor(path: string) {
     super(path)
     
-    this.div = createDiv(this, 'group', `
+    this.div = createDiv(this, 'item group', `
       <div class="label">
         <span>${this.name}</span>
       </div>

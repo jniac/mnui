@@ -29,7 +29,6 @@ export const toggleCss = /* css */`
 
 #mnui .toggle .input .toggle-overlay svg {
   fill: var(--color);
-  transform: translateY(1px);
 }
 
 #mnui .toggle .input .toggle-overlay svg {
