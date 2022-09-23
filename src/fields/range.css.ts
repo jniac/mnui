@@ -21,18 +21,25 @@ export const rangeCss = /* css */`
   font-size: .8em;
 }
 
-#mnui .range .range-overlay {
+#mnui .range .input .range-overlay {
   position: absolute;
   width: 100%;
   height: 100%;
   pointer-events: none;
+  opacity: var(--none-hover-opacity);
+  transition: opacity var(--hover-transition);
 }
 
-#mnui .range .range-overlay > * {
+#mnui .range .input.hovered .range-overlay {
+  --color: var(--active-color);
+  opacity: 1;
+}
+
+#mnui .range .input .range-overlay > * {
   position: absolute;
 }
 
-#mnui .range .range-overlay .thumb {
+#mnui .range .input .range-overlay .thumb {
   width: var(--thumb-width);
   height: var(--thumb-height);
   background-color: var(--color);
@@ -41,18 +48,18 @@ export const rangeCss = /* css */`
   border-radius: min(calc(var(--thumb-width) / 2), calc(var(--thumb-height) / 2));
 }
 
-#mnui .range .range-overlay .track {
+#mnui .range .input .range-overlay .track {
   height: var(--track-height);
   background-color: var(--color);
   top: calc((100% - var(--track-height)) / 2);
 }
 
-#mnui .range .range-overlay .track.before {
+#mnui .range .input .range-overlay .track.before {
   width: calc((100% - var(--thumb-width)) * var(--position) - var(--thumb-padding));
   border-radius: calc(var(--track-height) / 2) 0 0 calc(var(--track-height) / 2);
 }
 
-#mnui .range .range-overlay .track.after {
+#mnui .range .input .range-overlay .track.after {
   width: calc((100% - var(--thumb-width)) * (1 - var(--position)) - var(--thumb-padding));
   border-radius: 0 calc(var(--track-height) / 2) calc(var(--track-height) / 2) 0;
   right: 0;

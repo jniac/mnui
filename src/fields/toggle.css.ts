@@ -10,7 +10,7 @@ export const toggleCss = /* css */`
   cursor: pointer;
 }
 
-#mnui .toggle .toggle-overlay {
+#mnui .toggle .input .toggle-overlay {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -19,18 +19,24 @@ export const toggleCss = /* css */`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  opacity: var(--none-hover-opacity);
+  transition: opacity var(--hover-transition);
+}
+#mnui .toggle .input.hovered .toggle-overlay {
+  --color: var(--active-color);
+  opacity: 1;
 }
 
-#mnui .toggle .toggle-overlay svg {
+#mnui .toggle .input .toggle-overlay svg {
   fill: var(--color);
   transform: translateY(1px);
 }
 
-#mnui .toggle .toggle-overlay svg {
+#mnui .toggle .input .toggle-overlay svg {
   transition: opacity .25s ease-out;
 }
 
-#mnui .toggle .toggle-overlay circle {
+#mnui .toggle .input .toggle-overlay circle {
   transition: cx .25s ease-out;
 }
 

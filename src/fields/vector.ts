@@ -50,6 +50,12 @@ export const vector = (
       const label = subDiv.querySelector('.vector-label') as HTMLInputElement
       const input = subDiv.querySelector('input') as HTMLInputElement
       inputDiv.append(subDiv)
+      input.onfocus = () => {
+        subDiv.classList.add('focused')
+      }
+      input.onblur = () => {
+        subDiv.classList.remove('focused')
+      }
       input.oninput = () => {
         const cleanString = cleanNumberInputString(input.value)
         if (cleanString !== input.value) {

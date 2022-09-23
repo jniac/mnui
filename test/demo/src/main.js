@@ -62,8 +62,8 @@ getCube({
       mnui.vector('position', cube.position, { step: .1 })
       mnui.vector('position (-1,1) with a very long name', cube.position, { min: -1, max: 1, step: .05 })
       mnui.vector('rotation raw', cube.rotation)
-      mnui.vector('rotation map', cube.rotation, { keyMap: { '_x': 'x', '_y': 'y', '_z': 'z' } })
-      mnui.vector('rotation degree', cube.rotation, { 
+      mnui.vector('rotation keyMap', cube.rotation, { keyMap: { '_x': 'x', '_y': 'y', '_z': 'z' } })
+      mnui.vector('rotation map (degree)', cube.rotation, { 
         step: .1,
         keys: ['x', 'y', 'z'],
         map: [

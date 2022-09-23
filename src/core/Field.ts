@@ -65,7 +65,14 @@ export class Field<T> extends Item {
       }
     }
 
-    this.inputDiv = this.div.querySelector('.input') as HTMLDivElement
+    const inputDiv = this.div.querySelector('.input') as HTMLDivElement
+    inputDiv.onpointerenter = () => {
+      inputDiv.classList.add('hovered')
+    }
+    inputDiv.onpointerleave = () => {
+      inputDiv.classList.remove('hovered')
+    }
+    this.inputDiv = inputDiv
   }
 
   getValue() { return this.#value }

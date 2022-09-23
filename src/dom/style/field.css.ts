@@ -6,6 +6,8 @@ export const fieldCss = /* css */`
   flex-direction: row;
   align-items: stretch;
   padding-right: 4px;
+  box-sizing: content-box;
+  padding-top: 2px;
 }
 
 #mnui .field > .label {

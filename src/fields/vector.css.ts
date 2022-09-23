@@ -24,11 +24,11 @@ export const vectorCss = /* css */`
   pointer-events: none;
 }
 
-#mnui .vector .vector-input {
+#mnui .vector .vector-property .vector-input {
   flex: 1;
 }
 
-#mnui .vector .vector-input::after {
+#mnui .vector .vector-property .vector-input::after {
   content: '';
   position: absolute;
   left: 0;
@@ -39,6 +39,16 @@ export const vectorCss = /* css */`
   opacity: .2;
   border-radius: 2px;
   pointer-events: none;
+  transition: opacity var(--hover-transition);
+}
+
+#mnui .vector .vector-property.focused {
+  --color: var(--active-color);
+  color: var(--color);
+}
+
+#mnui .vector .vector-property.focused .vector-input::after {
+  opacity: .33;
 }
 
 #mnui .vector input {

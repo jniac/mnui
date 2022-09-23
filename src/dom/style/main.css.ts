@@ -19,8 +19,11 @@ ${vectorCss}
   --root-padding: 8px;
   --root-width: 320px;
   --input-width: 160px;
-  --line-height: 24px;
+  --line-height: 22px;
   --color: white;
+  --active-color: gold;
+  --none-hover-opacity: .75;
+  --hover-transition: .15s ease-out;
 }
 
 #mnui {
@@ -29,6 +32,7 @@ ${vectorCss}
   left: var(--root-padding);
   font-family: 'Fira Code', monospace;
   font-size: 10px;
+  letter-spacing: -.05em;
   width: var(--root-width);
   color: var(--color);
   background-color: #0004;
