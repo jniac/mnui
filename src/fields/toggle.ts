@@ -1,5 +1,5 @@
 import { InputValueArg, resolveValueArg } from '../types'
-import { Field } from './Field'
+import { Field } from '../core/Field'
 
 const getSvg = ({
   width = 32,

@@ -1,5 +1,5 @@
 
-import { group } from './fields/group'
+import { group } from './core/group'
 import { range } from './fields/range'
 import { toggle } from './fields/toggle'
 import { vector } from './fields/vector'

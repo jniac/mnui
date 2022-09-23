@@ -1,6 +1,6 @@
 import { clamp, inverseLerp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
-import { Field } from './Field'
+import { Field } from '../core/Field'
 import { onDrag } from '../event/drag'
 
 type Vector = Record<string, number>

@@ -1,8 +1,9 @@
 import { borderCss } from './border.css'
 import { fieldCss } from './field.css'
-import { rangeCss } from './range.css'
-import { toggleCss } from './toggle.css'
-import { vectorCss } from './vector.css'
+
+import { rangeCss } from '../../fields/range.css'
+import { toggleCss } from '../../fields/toggle.css'
+import { vectorCss } from '../../fields/vector.css'
 
 export const mainCss = /* css */`
 

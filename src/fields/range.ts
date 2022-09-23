@@ -1,6 +1,6 @@
 import { inverseLerp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
-import { Field } from './Field'
+import { Field } from '../core/Field'
 
 export const range = (path: string, valueArg: InputValueArg<number> = 0, { min = 0, max = 1, step = 0 } = {}) => {
   
