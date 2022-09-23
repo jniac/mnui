@@ -1,6 +1,7 @@
 import { InputValueArg, resolveValueArg } from '../types'
 import { Item, Group, map, createDiv } from './items'
 import { cloneValue, isEquivalent, copyValueTo } from './value'
+import { getStoreItem, setStoreItem } from '../store'
 
 let frame = 0
 const frameLoop = () => {
@@ -39,6 +40,8 @@ export class Field<T> extends Item {
   
   div: HTMLDivElement
   inputDiv: HTMLDivElement
+
+  useLocalStorage = false
 
   constructor(path: string) {
     super(path)
@@ -98,7 +101,11 @@ export class Field<T> extends Item {
   }
 
   setUserValue(newValue: T) {
-    return this.setValue(newValue, { triggerChange: true })
+    const changed = this.setValue(newValue, { triggerChange: true })
+    if (this.useLocalStorage) {
+      setStoreItem(`${this.id}-value`, this.#value)
+    }
+    return changed
   }
 
   getHasChanged() { return this.#frame === frame }
@@ -108,6 +115,10 @@ export class Field<T> extends Item {
     this.#initialValueObjectRef = value
     this.#isObject = typeof value === 'object'
     this.#updateView = updateView
+    if (this.useLocalStorage) {
+      const storeValue = getStoreItem(`${this.id}-value`, this.#value)
+      this.setValue(storeValue, { triggerChange: false })
+    }
     updateView(this.#value!)
   }
 

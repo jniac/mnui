@@ -26,7 +26,8 @@ export const vector = (
     step = 1,
     keys = null as string[] | null,
     keyMap = {} as Record<string, string>,
-    map = [identity, identity] as [(x: number) => number, (x: number) => number]
+    map = [identity, identity] as [(x: number) => number, (x: number) => number],
+    localStorage = false,
   } = {},
 ) => {
   
@@ -74,6 +75,7 @@ export const vector = (
       })
       return { key, input }
     })
+    field.useLocalStorage = localStorage
     field.init(initialValue, value => {
       for (const { key, input } of subFields) {
         // NOTE: Do not update focused input!
