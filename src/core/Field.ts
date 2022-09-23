@@ -10,6 +10,8 @@ const frameLoop = () => {
 }
 requestAnimationFrame(frameLoop)
 
+type Callback<T> = (value: T, field: Field<T>) => void
+
 export class Field<T> extends Item {
 
   static updateOrCreate<T>(
@@ -22,7 +24,7 @@ export class Field<T> extends Item {
     if (field) {
       if (field.hasChanged === false) {
         const { value } = resolveValueArg(valueArg)
-        field.setValue(value, { triggerChange: false })
+        field.setValue(value, { triggerUserChange: false })
       }
       return field
     } else {
@@ -37,6 +39,7 @@ export class Field<T> extends Item {
   #isObject!: boolean
   #frame = 0
   #updateView: ((value: T) => void) = () => {}
+  #onUserChangeSet = new Set<Callback<T>>()
   
   div: HTMLDivElement
   inputDiv: HTMLDivElement
@@ -82,7 +85,7 @@ export class Field<T> extends Item {
   
   cloneValue() { return cloneValue(this.#value) }
 
-  setValue(newValue: T, { triggerChange }: { triggerChange: boolean }): boolean {
+  setValue(newValue: T, { triggerUserChange }: { triggerUserChange: boolean }): boolean {
     if (isEquivalent(newValue, this.#value)) {
       return false
     }
@@ -94,14 +97,17 @@ export class Field<T> extends Item {
       this.#value = newValue
     }
     this.#updateView(this.#value)
-    if (triggerChange) {
+    if (triggerUserChange) {
       this.#frame = frame
+      for (const callback of this.#onUserChangeSet) {
+        callback(this.#value, this)
+      }
     }
     return true
   }
 
   setUserValue(newValue: T) {
-    const changed = this.setValue(newValue, { triggerChange: true })
+    const changed = this.setValue(newValue, { triggerUserChange: true })
     if (this.useLocalStorage) {
       setStoreItem(`${this.id}-value`, this.#value)
     }
@@ -117,9 +123,14 @@ export class Field<T> extends Item {
     this.#updateView = updateView
     if (this.useLocalStorage) {
       const storeValue = getStoreItem(`${this.id}-value`, this.#value)
-      this.setValue(storeValue, { triggerChange: false })
+      this.setValue(storeValue, { triggerUserChange: false })
     }
     updateView(this.#value!)
+  }
+
+  onUserChange(callback: Callback<T>) {
+    this.#onUserChangeSet.add(callback)
+    return this
   }
 
   get frame() { return this.#frame }

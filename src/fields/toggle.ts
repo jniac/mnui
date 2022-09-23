@@ -10,7 +10,7 @@ const getSvg = (id: string, {
       <svg width="${width}" height="${height}">
         <mask id="${id}">
           <rect width="${width}" height="${height}" fill="white" />
-          <circle cx="${height / 2}" cy="${height / 2}" r="${height / 2 - 1}" fill="black" />
+          <circle cx="${height / 2}" cy="${height / 2}" r="${height / 2 - 1.5}" fill="black" />
         </mask>
         <rect width="${width}" height="${height}" rx="${height / 2}" mask="url(#${id})" />
       </svg>

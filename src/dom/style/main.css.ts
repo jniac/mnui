@@ -1,9 +1,12 @@
 import { borderCss } from './border.css'
 import { fieldCss } from './field.css'
 
+import { sliderCss } from '../elements/slider.css'
+import { simpleInputCss } from '../elements/simple-input.css'
 import { rangeCss } from '../../fields/range.css'
 import { toggleCss } from '../../fields/toggle.css'
 import { vectorCss } from '../../fields/vector.css'
+import { simpleInputWithLabelCss } from '../elements/simple-input-with-label.css'
 
 export const mainCss = /* css */`
 
@@ -11,6 +14,11 @@ export const mainCss = /* css */`
 
 ${borderCss}
 ${fieldCss}
+
+${sliderCss}
+${simpleInputCss}
+${simpleInputWithLabelCss}
+
 ${rangeCss}
 ${toggleCss}
 ${vectorCss}

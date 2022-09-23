@@ -2,6 +2,7 @@ import { clamp, inverseLerp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from '../core/Field'
 import { onDrag } from '../event/drag'
+import { createSimpleInputWithLabel } from '../dom/elements/simple-input-with-label'
 
 type Vector = Record<string, number>
 
@@ -38,19 +39,21 @@ export const vector = (
     keys ??= Object.keys(initialValue).filter(key => typeof initialValue[key] === 'number')
     const subFields = keys.map(key => {
       const id = `${field.id}-${key}`
-      const subDiv = document.createElement('div')
+      const { div: subDiv, input, label } = createSimpleInputWithLabel(inputDiv, id, keyMap[key] ?? key)
       subDiv.classList.add('vector-property')
-      subDiv.innerHTML = `
-        <div class="vector-label">
-          <label for="${id}">${keyMap[key] ?? key}</label>
-        </div>
-        <div class="vector-input">
-          <input id="${id}" value="${initialValue[key]}">
-        </div>
-      `
-      const label = subDiv.querySelector('.vector-label') as HTMLInputElement
-      const input = subDiv.querySelector('input') as HTMLInputElement
-      inputDiv.append(subDiv)
+      // const subDiv = document.createElement('div')
+      // subDiv.classList.add('vector-property')
+      // subDiv.innerHTML = `
+      //   <div class="vector-label">
+      //     <label for="${id}">${keyMap[key] ?? key}</label>
+      //   </div>
+      //   <div class="vector-input">
+      //     <input id="${id}" value="0">
+      //   </div>
+      // `
+      // const label = subDiv.querySelector('.vector-label') as HTMLInputElement
+      // const input = subDiv.querySelector('input') as HTMLInputElement
+      // inputDiv.append(subDiv)
       input.onfocus = () => {
         subDiv.classList.add('focused')
       }
