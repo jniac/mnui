@@ -108,7 +108,10 @@ export class Field<T> extends Item {
     return changed
   }
 
-  getHasChanged() { return this.#frame === frame }
+  getHasChanged() {
+    const delta = frame - this.#frame
+    return delta <= 1
+  }
 
   init(value: T, updateView: (value: T) => void) {
     this.#value = cloneValue(value)

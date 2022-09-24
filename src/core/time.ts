@@ -37,11 +37,11 @@ const nextFrame = new DoubleSet<TimeCallback>()
 export const nextFrameAdd = (callback: TimeCallback) => nextFrame.add(callback)
 
 const frameLoop = (ms: number) => {
+  requestAnimationFrame(frameLoop)
   timeOld = time
   time = ms / 1000
   deltaTime = time - timeOld
   frame++
-  requestAnimationFrame(frameLoop)
   for (const callback of nextFrame.dump()) {
     callback(timeInfo)
   }
