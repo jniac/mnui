@@ -3,18 +3,52 @@ import { Field } from '../core/Field'
 import { createSlider } from '../dom/elements/slider'
 import { createSimpleInput } from '../dom/elements/simple-input'
 
-export const range = (
-  path: string,
-  valueArg: InputValueArg<number> = 0,
-  {
+type RangeOptions = {
+  min: number
+  max: number
+  step: number
+  localStorage: boolean
+}
+
+type RangeOptionsArg = Partial<RangeOptions> | [number, number]
+
+const resolveRangeOptions = (arg: RangeOptionsArg) => {
+  if (Array.isArray(arg)) {
+    const [min, max] = arg
+    arg = {
+      min,
+      max,
+      step: 0,
+      localStorage: false,
+    }
+  }
+  const {
     min = 0,
     max = 1,
     step = 0,
     localStorage = false,
-  } = {},
+  } = arg
+  return {
+    min,
+    max,
+    step,
+    localStorage,
+  }
+}
+
+export const range = (
+  path: string,
+  valueArg: InputValueArg<number> = 0,
+  options: RangeOptionsArg = {},
 ) => {
 
   const onCreate = (field: Field<number>) => {
+    const {
+      min,
+      max,
+      step,
+      localStorage,
+    } = resolveRangeOptions(options)
     const { div, inputDiv } = field
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('range')

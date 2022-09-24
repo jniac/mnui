@@ -110,6 +110,8 @@ getCube({
   },
 })
 
+mnui.range('range test', 100, [-1000, 1000])
+
 mnui.group('shader', () => {
   mnui.range('x')
   mnui.range('x')
