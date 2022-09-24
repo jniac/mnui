@@ -37,7 +37,7 @@ export class Field<T> extends Item {
   #value!: T
   #initialValueObjectRef!: T
   #isObject!: boolean
-  #frame = 0
+  #frame = -1
   #updateView: ((value: T) => void) = () => {}
   #onUserChangeSet = new Set<Callback<T>>()
   

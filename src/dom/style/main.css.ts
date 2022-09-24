@@ -7,6 +7,7 @@ import { rangeCss } from '../../fields/range.css'
 import { toggleCss } from '../../fields/toggle.css'
 import { vectorCss } from '../../fields/vector.css'
 import { simpleInputWithLabelCss } from '../elements/simple-input-with-label.css'
+import { buttonCss } from '../../fields/button.css'
 
 export const mainCss = /* css */`
 
@@ -22,12 +23,13 @@ ${simpleInputWithLabelCss}
 ${rangeCss}
 ${toggleCss}
 ${vectorCss}
+${buttonCss}
 
 #mnui {
   --root-padding: 8px;
   --root-width: 320px;
   --input-width: 160px;
-  --line-height: 22px;
+  --line-height: 26px;
   --color: white;
   --active-color: gold;
   --none-hover-opacity: .75;
