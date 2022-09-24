@@ -1,6 +1,6 @@
-export const buttonCss = /* css */`
+export const actionCss = /* css */`
 
-#mnui .field.button {
+#mnui .field.action {
   padding: 4px;
   padding-left: var(--padding-left);
 }

@@ -6,7 +6,7 @@ import { simpleInputCss } from '../elements/simple-input.css'
 import { simpleInputWithLabelCss } from '../elements/simple-input-with-label.css'
 import { sliderCss } from '../elements/slider.css'
 
-import { buttonCss } from '../../fields/button.css'
+import { actionCss } from '../../fields/action.css'
 import { rangeCss } from '../../fields/range.css'
 import { toggleCss } from '../../fields/toggle.css'
 import { vectorCss } from '../../fields/vector.css'
@@ -23,7 +23,7 @@ ${simpleInputCss}
 ${simpleInputWithLabelCss}
 ${sliderCss}
 
-${buttonCss}
+${actionCss}
 ${rangeCss}
 ${toggleCss}
 ${vectorCss}
@@ -38,6 +38,10 @@ ${vectorCss}
   --none-hover-opacity: .75;
   --hover-transition: .15s ease-out;
   --padding-left: 4px;
+}
+
+#mnui * {
+  position: relative;
 }
 
 #mnui {
