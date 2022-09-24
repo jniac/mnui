@@ -1,4 +1,6 @@
 import { Field } from '../core/Field'
+import { nextFrameAdd } from '../core/time'
+import { createSimpleButton } from '../dom/elements/simple-button'
 
 export const button = (
   path: string,
@@ -7,14 +9,16 @@ export const button = (
   const onCreate = (field: Field<boolean>) => {
     const { div, name } = field
     div.classList.add('button')
-    div.innerHTML = `
-      <div>
-        <button>${name}</button>
-      </div>
-    `
-    const button = div.querySelector('button') as HTMLButtonElement
+    div.innerHTML = ''
+    const { button } = createSimpleButton(div)
+    button.innerHTML = name
     button.onclick = () => {
-      field.setUserValue(!field.value)
+      field.setUserValue(true)
+      nextFrameAdd(() => {
+        field.setValue(false, {
+          triggerUserChange: false,
+        })
+      })
     }
   }
 

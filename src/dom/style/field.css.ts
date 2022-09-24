@@ -6,8 +6,8 @@ export const fieldCss = /* css */`
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  padding-right: 4px;
-  padding-top: 2px;
+  padding: 4px;
+  padding-left: var(--padding-left);
 }
 
 #mnui .group .field {
@@ -17,7 +17,6 @@ export const fieldCss = /* css */`
 #mnui .field > .label {
   margin-right: 8px;
   flex: 1;
-  padding-left: var(--padding-left);
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -1,13 +1,15 @@
 import { borderCss } from './border.css'
 import { fieldCss } from './field.css'
 
-import { sliderCss } from '../elements/slider.css'
+import { simpleButtonCss } from '../elements/simple-button.css'
 import { simpleInputCss } from '../elements/simple-input.css'
+import { simpleInputWithLabelCss } from '../elements/simple-input-with-label.css'
+import { sliderCss } from '../elements/slider.css'
+
+import { buttonCss } from '../../fields/button.css'
 import { rangeCss } from '../../fields/range.css'
 import { toggleCss } from '../../fields/toggle.css'
 import { vectorCss } from '../../fields/vector.css'
-import { simpleInputWithLabelCss } from '../elements/simple-input-with-label.css'
-import { buttonCss } from '../../fields/button.css'
 
 export const mainCss = /* css */`
 
@@ -16,14 +18,15 @@ export const mainCss = /* css */`
 ${borderCss}
 ${fieldCss}
 
-${sliderCss}
+${simpleButtonCss}
 ${simpleInputCss}
 ${simpleInputWithLabelCss}
+${sliderCss}
 
+${buttonCss}
 ${rangeCss}
 ${toggleCss}
 ${vectorCss}
-${buttonCss}
 
 #mnui {
   --root-padding: 8px;

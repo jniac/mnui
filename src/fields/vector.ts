@@ -41,25 +41,8 @@ export const vector = (
       const id = `${field.id}-${key}`
       const { div: subDiv, input, label } = createSimpleInputWithLabel(inputDiv, id, keyMap[key] ?? key)
       subDiv.classList.add('vector-property')
-      // const subDiv = document.createElement('div')
-      // subDiv.classList.add('vector-property')
-      // subDiv.innerHTML = `
-      //   <div class="vector-label">
-      //     <label for="${id}">${keyMap[key] ?? key}</label>
-      //   </div>
-      //   <div class="vector-input">
-      //     <input id="${id}" value="0">
-      //   </div>
-      // `
-      // const label = subDiv.querySelector('.vector-label') as HTMLInputElement
-      // const input = subDiv.querySelector('input') as HTMLInputElement
-      // inputDiv.append(subDiv)
-      input.onfocus = () => {
-        subDiv.classList.add('focused')
-      }
-      input.onblur = () => {
-        subDiv.classList.remove('focused')
-      }
+      input.onfocus = () => subDiv.classList.add('focused')
+      input.onblur = () => subDiv.classList.remove('focused')
       input.oninput = () => {
         const cleanString = cleanNumberInputString(input.value)
         if (cleanString !== input.value) {

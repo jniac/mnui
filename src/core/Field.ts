@@ -2,13 +2,7 @@ import { InputValueArg, resolveValueArg } from '../types'
 import { Item, Group, map, createDiv } from './items'
 import { cloneValue, isEquivalent, copyValueTo } from './value'
 import { getStoreItem, setStoreItem } from '../store'
-
-let frame = 0
-const frameLoop = () => {
-  requestAnimationFrame(frameLoop)
-  frame++
-}
-requestAnimationFrame(frameLoop)
+import { frame } from './time'
 
 type Callback<T> = (value: T, field: Field<T>) => void
 
@@ -23,7 +17,7 @@ export class Field<T> extends Item {
     const field = map.get(path) as Field<T>
     if (field) {
       if (field.hasChanged === false) {
-        const { value } = resolveValueArg(valueArg)
+        const { value } = resolveValueArg(valueArg, field.value)
         field.setValue(value, { triggerUserChange: false })
       }
       return field

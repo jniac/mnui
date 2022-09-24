@@ -71,6 +71,22 @@ getCube({
           x => x * Math.PI / 180,
         ],
       })
+
+      if (mnui.button('reset').value) {
+        cube.position.set(0, 0, 0)
+        cube.rotation.set(0, 0, 0)
+      }
+
+      {
+        // NOTE: This is very cool, very legible: if playing (move or rotate) 
+        // display "stop" (2nd label), otherwise display "play" (1rst label)
+        const playing = autoMove || autoRotate
+        const { value, hasChanged } = mnui.flipflop('play:stop', playing)
+        if (hasChanged) {
+          autoMove = value
+          autoRotate = value
+        }
+      }
     })
   },
 })
@@ -102,3 +118,5 @@ mnui.group('shader', () => {
 
 mnui.range('shader-2/position', { initialValue: 2 })
 mnui.range('shader/position', { initialValue: 2 })
+
+mnui.button('alert').onUserChange(() => alert('ok'))

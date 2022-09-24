@@ -4,6 +4,7 @@ import { range } from './fields/range'
 import { toggle } from './fields/toggle'
 import { vector } from './fields/vector'
 import { button } from './fields/button'
+import { flipflop } from './fields/flipflop'
 
 export const mnui = {
   range,
@@ -11,4 +12,5 @@ export const mnui = {
   toggle,
   vector,
   button,
+  flipflop,
 }
