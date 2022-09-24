@@ -111,6 +111,7 @@ getCube({
 })
 
 mnui.range('range test', 100, [-1000, 1000])
+mnui.flipflop('flipflop test').onUserChange(value => alert(value))
 
 mnui.group('shader', () => {
   mnui.range('x')
