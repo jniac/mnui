@@ -17,6 +17,9 @@ const renderLoop = () => {
 }
 ```
 
+<img width="369" alt="image" src="https://user-images.githubusercontent.com/11039919/192141213-fc34eb9d-74e2-4231-97ba-dfb009c2345a.png">
+
+
 ## Dev
 ```
 yarn start
