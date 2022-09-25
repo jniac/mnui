@@ -5,7 +5,9 @@ export const simpleInputCss = /* css */`
   transition: color var(--hover-transition), --color var(--hover-transition);
 }
 
-#mnui .focused .simple-input,
+#mnui .hovered > .simple-input,
+#mnui .simple-input.hovered,
+#mnui .focused > .simple-input,
 #mnui .simple-input.focused {
   --color: var(--active-color);
   color: var(--color);

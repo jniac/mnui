@@ -2,6 +2,7 @@ import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from '../core/Field'
 import { createSlider } from '../dom/elements/slider'
 import { createSimpleInput } from '../dom/elements/simple-input'
+import { onDrag } from '../event/drag'
 
 type RangeOptions = {
   min: number
@@ -60,10 +61,15 @@ export const range = (
       const value = Number.parseFloat(simple.input.value)
       field.setUserValue(value)
     }
+    let sliderOnInputValue = NaN
     slider.input.oninput = () => {
-      const value = Number.parseFloat(slider.input.value)
-      field.setUserValue(value)
+      sliderOnInputValue = Number.parseFloat(slider.input.value)
     }
+    onDrag(slider.input, () => {
+      if (Number.isFinite(sliderOnInputValue)) {
+        field.setUserValue(sliderOnInputValue)
+      }
+    })
     field.useLocalStorage = localStorage
     field.init(initialValue, value => {
       simple.update(value)

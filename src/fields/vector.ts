@@ -41,6 +41,8 @@ export const vector = (
       const id = `${field.id}-${key}`
       const { div: subDiv, input, label } = createSimpleInputWithLabel(inputDiv, id, keyMap[key] ?? key)
       subDiv.classList.add('vector-property')
+      input.onpointerenter = () => subDiv.classList.add('hovered')
+      input.onpointerleave = () => subDiv.classList.remove('hovered')
       input.onfocus = () => subDiv.classList.add('focused')
       input.onblur = () => subDiv.classList.remove('focused')
       input.oninput = () => {

@@ -50,7 +50,7 @@ getCube({
       autoRotate = mnui.toggle('auto rotate 2', autoRotate).value
       rotationSpeed = mnui.range('rotation speed', rotationSpeed, { min: 0, max: 4 }).value
       rotationSpeed = mnui.range('rotation speed 2', rotationSpeed, { min: 0, max: 4 }).value
-
+      
       if (autoMove) {
         positionTime += 1 / 60
         cube.position.y += Math.cos(positionTime) * .01
@@ -60,6 +60,7 @@ getCube({
       }
 
       mnui.vector('position', cube.position, { step: .1 })
+      cube.position.y = mnui.range('position.y', cube.position.y).value
       mnui.vector('position (-1,1) with a very long name', cube.position, { min: -1, max: 1, step: .05 })
       mnui.vector('rotation raw', cube.rotation)
       mnui.vector('rotation keyMap', cube.rotation, { keyMap: { '_x': 'x', '_y': 'y', '_z': 'z' } })
