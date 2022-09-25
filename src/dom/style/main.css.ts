@@ -11,7 +11,7 @@ import { rangeCss } from '../../fields/range.css'
 import { toggleCss } from '../../fields/toggle.css'
 import { vectorCss } from '../../fields/vector.css'
 
-export const mainCss = /* css */`
+export const getMainCss = (customCss = '') => /* css */`
 
 @import url(https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=block);
 
@@ -34,6 +34,7 @@ ${vectorCss}
   --input-width: 160px;
   --line-height: 26px;
   --color: white;
+  --background-color: #0004;
   --active-color: gold;
   --none-hover-opacity: .75;
   --hover-transition: .15s ease-out;
@@ -53,7 +54,7 @@ ${vectorCss}
   letter-spacing: -.05em;
   width: var(--root-width);
   color: var(--color);
-  background-color: #0004;
+  background-color: var(--background-color);
   backdrop-filter: blur(32px) brightness(1.15);
   -webkit-backdrop-filter: blur(32px) brightness(1.15);
   -webkit-font-smoothing: antialiased;
@@ -100,5 +101,7 @@ ${vectorCss}
 #mnui .group.collapsed > .content {
   display: none;
 }
+
+${customCss}
 
 `

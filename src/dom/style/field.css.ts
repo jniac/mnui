@@ -26,7 +26,6 @@ export const fieldCss = /* css */`
 #mnui .field > .label > .name {
   overflow: hidden;
   white-space: nowrap;
-  cursor: none;
   text-overflow: ellipsis;
 }
 

@@ -1,4 +1,4 @@
-import { clamp, inverseLerp } from '../math'
+import { clamp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from '../core/Field'
 import { onDrag } from '../event/drag'
@@ -18,6 +18,14 @@ const cleanNumberInputString = (value: string) => {
   return value
 }
 
+const resolveKeys = (keys: string[] | string) => {
+  if (Array.isArray(keys)) {
+    return keys
+  } else {
+    return keys.split(/\s*,\s*/)
+  }
+}
+
 export const vector = (
   path: string, 
   valueArg: InputValueArg<Vector>, 
@@ -25,7 +33,7 @@ export const vector = (
     min = -Infinity, 
     max = Infinity, 
     step = 1,
-    keys = null as string[] | null,
+    keys = null as string[] | string | null,
     keyMap = {} as Record<string, string>,
     map = [identity, identity] as [(x: number) => number, (x: number) => number],
     localStorage = false,
@@ -37,7 +45,7 @@ export const vector = (
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('vector')
     keys ??= Object.keys(initialValue).filter(key => typeof initialValue[key] === 'number')
-    const subFields = keys.map(key => {
+    const subFields = resolveKeys(keys).map(key => {
       const id = `${field.id}-${key}`
       const { div: subDiv, input, label } = createSimpleInputWithLabel(inputDiv, id, keyMap[key] ?? key)
       subDiv.classList.add('vector-property')

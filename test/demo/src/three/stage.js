@@ -1,7 +1,7 @@
 import { THREE } from './THREE.js'
 
 const scene = new THREE.Scene()
-scene.background = new THREE.Color('#ccc')
+scene.background = new THREE.Color('#bcd')
 const camera = new THREE.PerspectiveCamera(75)
 const renderer = new THREE.WebGLRenderer({
   antialias: true,

@@ -1,6 +1,7 @@
-import { mainCss } from './style/main.css'
+import { getMainCss } from './style/main.css'
 
 let root: HTMLDivElement | null = null
+let customCss = ''
 
 const createRoot = () => {
   root = document.createElement('div')
@@ -9,7 +10,7 @@ const createRoot = () => {
   document.body.appendChild(root)
 
   const style = document.createElement('style')
-  style.innerHTML = mainCss
+  style.innerHTML = getMainCss(customCss)
   style.id = 'mnui-style'
   document.head.prepend(style)
 
@@ -17,3 +18,11 @@ const createRoot = () => {
 }
 
 export const getOrCreateRoot = () => root ?? createRoot()
+
+export const setCustomStyle = (customStyle: string) => {
+  customCss = customStyle
+  const style = document.head.querySelector('#mnui-style')
+  if (style) {
+    style.innerHTML = getMainCss(customCss)
+  }
+}

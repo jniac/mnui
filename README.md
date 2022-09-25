@@ -6,16 +6,36 @@ The kit allows to declare a dom inspector in a functional / declarative way:
 ```ts
 import { mnui } from '@jniac/mnui'
 
-const someState = { x: 5 }
+const someState = {
+  active: true,
+  x: 5,
+  position: { x: .3, y: .4, z: .5 },
+  rotation: { x: .3, y: .4, z: .5, order: 'XYZ' },
+}
+
+mnui.setCustomStyle(`
+  #mnui {
+    --color: #005128;
+    --background-color: #fff9;
+  }
+`)
 
 const renderLoop = () => {
+  requestAnimationFrame(renderLoop)
 
   mnui.group('My Component', () => {
-    const active = mnui.button('active', { initialValue: true }, 'switch').value
+    someState.active = mnui.toggle('active', someState.active).value
     someState.x = mnui.range('x', someState.x, { min: 0, max: 10 }).value
+    mnui.vector('position', someState.position)
+    mnui.vector('rotation', someState.rotation, { keys: 'x,y,z', map: [x => x * 180 / Math.PI, x => x * Math.PI / 180], step: .05 })
   })
+
+  cube.position.copy(someState.position)
 }
+
+requestAnimationFrame(renderLoop)
 ```
+will render into: 
 
 <img width="432" alt="image" src="https://user-images.githubusercontent.com/11039919/192141550-530be514-5011-4b1c-b1c0-e81a54be1f9f.png">
 

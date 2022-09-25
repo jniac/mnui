@@ -1,4 +1,6 @@
 
+import { setCustomStyle } from './dom/root'
+
 import { action } from './fields/action'
 import { action as button } from './fields/action'
 import { group } from './fields/group'
@@ -12,6 +14,8 @@ import { flipflop } from './fields/flipflop'
 // other names, especially in CSS declaration.
 
 export const mnui = {
+  setCustomStyle,
+
   action,
   button,
   range,
