@@ -17,7 +17,7 @@ const renderLoop = () => {
 }
 ```
 
-<img width="369" alt="image" src="https://user-images.githubusercontent.com/11039919/192141213-fc34eb9d-74e2-4231-97ba-dfb009c2345a.png">
+<img width="432" alt="image" src="https://user-images.githubusercontent.com/11039919/192141550-530be514-5011-4b1c-b1c0-e81a54be1f9f.png">
 
 
 ## Dev
