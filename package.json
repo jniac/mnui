@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "node scripts/watch.mjs",
+    "start": "node scripts/start.mjs",
     "build": "rollup --config rollup.config.js"
   },
   "keywords": [],
