@@ -1,6 +1,8 @@
 # mnui 
 Minimal UI kit for quick prototyping.
 
+[demo](https://jniac.github.io/mnui/test/demo/)
+
 The kit allows to declare a dom inspector in a functional / declarative way:
 
 ```ts
