@@ -179,7 +179,7 @@ const uniforms = {
   uSize: { value: new THREE.Vector4(window.innerWidth, window.innerHeight, window.innerWidth / window.innerHeight) },
   uParam1: { value: new THREE.Vector4() },
   uTransform1: { value: new THREE.Vector4(1.7, 1.6, 41.6, 0.8) },
-  uShadow: { value: new THREE.Vector4(7, 1, 1, .33) },
+  uShadow: { value: new THREE.Vector4(7, 1, 1, .66) },
   uOffset1: { value: new THREE.Vector4(20, .1, 1, 1) },
   uColor: { value: new THREE.Color('#221c30') },
   uAliasThreshold: { value: 1 },
