@@ -76,6 +76,10 @@ export class Field<T> extends Item {
       inputDiv.classList.remove('hovered')
     }
     this.inputDiv = inputDiv
+
+    this.onDestroy(() => {
+      this.div.remove()
+    })
   }
 
   getValue() { return this.#value }

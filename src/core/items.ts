@@ -35,6 +35,14 @@ export class Item {
   #children: Item[] = [];
   *children() { yield* this.#children }
 
+  #destroyed = false
+  get destroyed() { return this.#destroyed }
+  destroy: () => void
+  #onDestroySet = new Set<() => void>()
+  onDestroy(callback: () => void) {
+    this.#onDestroySet.add(callback)
+  }
+
   constructor(path: string) {
     this.#path = path
     this.#parent = ensureParent(path)
@@ -45,6 +53,23 @@ export class Item {
     this.#id = getNewId(this.#path)
     map.set(this.#path, this)
     idMap.set(this.#id, this)
+
+    // NOTE: destroy has to be binded to 'this'
+    this.destroy = () => {
+      if (this.#destroyed === false) {
+        this.#destroyed = true
+        for (const callback of this.#onDestroySet) {
+          callback()
+        }
+        for (const child of this.#children) {
+          child.destroy()
+        }
+        this.#parent = null
+        this.#children = []
+        map.delete(this.#path)
+        idMap.delete(this.#id)
+      }
+    }
   }
 
   *allParents() {
@@ -120,6 +145,10 @@ export class Group extends Item {
     }
 
     this.contentDiv = this.div.querySelector('.content') as HTMLDivElement
+
+    this.onDestroy(() => {
+      this.div.remove()
+    })
   }
 }
 
