@@ -1,9 +1,5 @@
 export const rangeCss = /* css */`
 
-#mnui .range input[type=range] {
-  opacity: 0;
-}
-
 #mnui .range {
   --track-height: 3px;
   --thumb-width: var(--track-height);

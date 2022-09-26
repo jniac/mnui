@@ -112,7 +112,7 @@ bool checker(vec2 uv, float size) {
 vec2 sinDistance(vec2 uv) {
   float strait = -(uv.y * 8.0);
   float curveBase = strait - 1.0;
-  float curve = curveBase - sin(uv.x * 8.0) * 0.5 + sin(uv.x * 2.0) * 0.5;
+  float curve = curveBase - sin(uv.x * 5.5) * 0.25 + sin(uv.x * 2.1) * 0.5 + sin(uv.x * 1.1) * 0.75;
   return vec2(strait, curve);
 }
 
@@ -175,10 +175,10 @@ void main()	{
 
 const uniforms = {
   uTime: { value: 0 },
-  uZoom: { value: .2 },
+  uZoom: { value: .25 },
   uSize: { value: new THREE.Vector4(window.innerWidth, window.innerHeight, window.innerWidth / window.innerHeight) },
   uParam1: { value: new THREE.Vector4() },
-  uTransform1: { value: new THREE.Vector4(1.7, 1.6, 41.6, 0.8) },
+  uTransform1: { value: new THREE.Vector4(1.7, 1.6, 45.7, 0.64) },
   uShadow: { value: new THREE.Vector4(7, 1, 1, .66) },
   uOffset1: { value: new THREE.Vector4(20, .1, 1, 1) },
   uColor: { value: new THREE.Color('#221c30') },

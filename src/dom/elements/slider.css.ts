@@ -6,8 +6,10 @@ export const sliderCss = /* css */`
 }
 
 #mnui .slider input {
-  opacity: 0;
-  width: 100%;
+  opacity: .3;
+  --over-margin: 6px;
+  width: calc(100% + 2 * var(--over-margin));
+  left: calc(var(--over-margin) * -1);
 }
 
 #mnui .slider .slider-overlay {
