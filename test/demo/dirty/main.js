@@ -1,7 +1,7 @@
 import { THREE } from '../src/three/THREE.js'
 import { getCube, getPlane } from '../src/three/utils.js'
 import { vertexShader } from '../src/glsl/vertex.glsl.js'
-import { mnui } from '../../../dist/index.js'
+import { mnui } from '../src/mnui.js'
 
 const fragmentShader = `
 

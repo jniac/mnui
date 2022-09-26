@@ -1,12 +1,12 @@
 {
   "name": "@jniac/mnui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/mnui.js",
+  "types": "dist/mnui.d.ts",
   "scripts": {
     "start": "node scripts/start.mjs",
-    "build": "rollup --config rollup.config.js"
+    "build": "rollup --config rollup.config.js && mv dist/index.js dist/mnui.js && mv dist/index.d.ts dist/mnui.d.ts && rm -rf dist/types"
   },
   "keywords": [],
   "author": "",

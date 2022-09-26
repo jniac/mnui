@@ -1,4 +1,4 @@
-import { mnui } from "../../../dist/index.js"
+import { mnui } from '../src/mnui.js'
 import { scene } from '../src/three/stage.js'
 import { getCube } from "../src/three/utils.js"
 

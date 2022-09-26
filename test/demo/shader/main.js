@@ -1,7 +1,7 @@
 import { THREE } from '../src/three/THREE.js'
 import { getPlane } from '../src/three/utils.js'
 import { glsl_utils, glsl_easings, glsl_iq_noise } from '../src/glsl/utils/index.js'
-import { mnui } from '../../../dist/index.js'
+import { mnui } from '../src/mnui.js'
 import { camera, renderer } from '../src/three/stage.js'
 
 
