@@ -26,9 +26,9 @@ const resolveKeys = (keys: string[] | string) => {
   }
 }
 
-export const vector = (
+export const vector = <T extends object>(
   path: string, 
-  valueArg: InputValueArg<Vector>, 
+  valueArg: InputValueArg<T>, 
   { 
     min = -Infinity, 
     max = Infinity, 
@@ -40,11 +40,11 @@ export const vector = (
   } = {},
 ) => {
   
-  const onCreate = (field: Field<Vector>) => {
+  const onCreate = (field: Field<T>) => {
     const { div, inputDiv } = field
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('vector')
-    keys ??= Object.keys(initialValue).filter(key => typeof initialValue[key] === 'number')
+    keys ??= Object.keys(initialValue).filter(key => typeof (initialValue as Vector)[key] === 'number')
     const subFields = resolveKeys(keys).map(key => {
       const id = `${field.id}-${key}`
       const { div: subDiv, input, label } = createSimpleInputWithLabel(inputDiv, id, keyMap[key] ?? key)
@@ -59,28 +59,27 @@ export const vector = (
           input.value = cleanString
         }
         const subValue = clamp(map[1](Number.parseFloat(cleanString)), min, max)
-        const value = field.cloneValue()
+        const value = field.cloneValue() as Vector
         value[key] = subValue
-        field.setUserValue(value)
+        field.setUserValue(value as T)
       }
       onDrag(label, info => {
-        const value = field.cloneValue()
+        const value = field.cloneValue() as Vector
         const delta = info.positionDelta.x * (info.shiftKey ? 10 : info.altKey ? .1 : 1) * step
         value[key] = clamp(value[key] + delta, min, max)
-        field.setUserValue(value)
+        field.setUserValue(value as T)
       })
       return { key, input }
     })
-    field.useLocalStorage = localStorage
     field.init(initialValue, value => {
       for (const { key, input } of subFields) {
         // NOTE: Do not update focused input!
         if (document.activeElement !== input) {
-          input.value = map[0](value[key]).toString()
+          input.value = map[0]((value as Vector)[key]).toString()
         }
       }
     })
   }
   
-  return Field.updateOrCreate<Vector>(path, onCreate, valueArg)
+  return Field.updateOrCreate<T>(path, onCreate, valueArg, localStorage)
 }

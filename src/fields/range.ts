@@ -40,16 +40,15 @@ const resolveRangeOptions = (arg: RangeOptionsArg) => {
 export const range = (
   path: string,
   valueArg: InputValueArg<number> = 0,
-  options: RangeOptionsArg = {},
+  optionsArg: RangeOptionsArg = {},
 ) => {
-
+  const options = resolveRangeOptions(optionsArg)
   const onCreate = (field: Field<number>) => {
     const {
       min,
       max,
       step,
-      localStorage,
-    } = resolveRangeOptions(options)
+    } = options
     const { div, inputDiv } = field
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('range')
@@ -70,12 +69,11 @@ export const range = (
         field.setUserValue(sliderOnInputValue)
       }
     })
-    field.useLocalStorage = localStorage
     field.init(initialValue, value => {
       simple.update(value)
       slider.update(value)
     })
   }
 
-  return Field.updateOrCreate<number>(path, onCreate, valueArg)
+  return Field.updateOrCreate<number>(path, onCreate, valueArg, options.localStorage)
 }

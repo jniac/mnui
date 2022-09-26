@@ -18,7 +18,12 @@ const getSvg = (id: string, {
   `
 }
 
-export const toggle = (path: string, valueArg: InputValueArg<boolean> = true) => {
+export const toggle = (
+  path: string, 
+  valueArg: InputValueArg<boolean> = true,
+  {
+    localStorage = false,
+  } = {}) => {
 
   const onCreate = (field: Field<boolean>) => {
     const { div, inputDiv } = field
@@ -40,5 +45,5 @@ export const toggle = (path: string, valueArg: InputValueArg<boolean> = true) =>
     }
   }
 
-  return Field.updateOrCreate<boolean>(path, onCreate, valueArg)
+  return Field.updateOrCreate<boolean>(path, onCreate, valueArg, localStorage)
 }

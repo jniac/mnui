@@ -22,5 +22,5 @@ export const action = (
     }
   }
 
-  return Field.updateOrCreate<boolean>(path, onCreate, false)
+  return Field.updateOrCreate<boolean>(path, onCreate, false, false)
 }

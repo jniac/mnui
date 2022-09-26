@@ -12,17 +12,20 @@ export class Field<T> extends Item {
     partialPath: string,
     onCreate: (field: Field<T>) => void,
     valueArg: InputValueArg<T>,
+    useLocalStorage: boolean,
   ) {
     const path = `${Group.current?.path ?? ''}/${partialPath}`
     const field = map.get(path) as Field<T>
     if (field) {
       if (field.hasChanged === false) {
         const { value } = resolveValueArg(valueArg, field.value)
+        field.useLocalStorage = useLocalStorage
         field.setValue(value, { triggerUserChange: false })
       }
       return field
     } else {
       const field = new Field<T>(path)
+      field.useLocalStorage = useLocalStorage
       onCreate(field)
       return field
     }

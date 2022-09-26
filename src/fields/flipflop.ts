@@ -13,7 +13,10 @@ const resolveNames = (str: string) => {
 
 export const flipflop = (
   path: string,
-  valueArg: InputValueArg<boolean> = { initialValue: false }
+  valueArg: InputValueArg<boolean> = { initialValue: false },
+  {
+    localStorage = false,
+  } = {}
 ) => {
 
   const onCreate = (field: Field<boolean>) => {
@@ -31,5 +34,5 @@ export const flipflop = (
     })
   }
 
-  return Field.updateOrCreate<boolean>(path, onCreate, valueArg)
+  return Field.updateOrCreate<boolean>(path, onCreate, valueArg, localStorage)
 }
