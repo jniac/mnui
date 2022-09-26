@@ -9,6 +9,12 @@ import { toggle } from './fields/toggle'
 import { vector } from './fields/vector'
 import { flipflop } from './fields/flipflop'
 
+// utils
+import { onDrag } from './event/drag'
+import { onFrame, onNextFrame } from './core/time'
+
+
+
 // NOTE: "button" here is an alias for "action".
 // "button" is considered as too generic as a name, and can easily collides 
 // other names, especially in CSS declaration.
@@ -23,4 +29,10 @@ export const mnui = {
   toggle,
   vector,
   flipflop,
+
+  utils: {
+    onFrame,
+    onNextFrame,
+    onDrag,
+  },
 }

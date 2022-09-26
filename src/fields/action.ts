@@ -1,5 +1,5 @@
 import { Field } from '../core/Field'
-import { nextFrameAdd } from '../core/time'
+import { onNextFrame } from '../core/time'
 import { createSimpleButton } from '../dom/elements/simple-button'
 
 export const action = (
@@ -14,7 +14,7 @@ export const action = (
     button.innerHTML = name
     button.onclick = () => {
       field.setUserValue(true)
-      nextFrameAdd(() => {
+      onNextFrame(() => {
         field.setValue(false, {
           triggerUserChange: false,
         })

@@ -32,9 +32,15 @@ export class Item {
   #parent: Group | null
   get parent() { return this.#parent }
 
+  #children: Item[] = [];
+  *children() { yield* this.#children }
+
   constructor(path: string) {
     this.#path = path
     this.#parent = ensureParent(path)
+    if (this.#parent) {
+      this.#parent!.#children.push(this)
+    }
     this.#name = this.#path.split('/').pop()!
     this.#id = getNewId(this.#path)
     map.set(this.#path, this)
