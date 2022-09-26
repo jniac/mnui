@@ -6,7 +6,7 @@ export const sliderCss = /* css */`
 }
 
 #mnui .slider input {
-  opacity: .3;
+  opacity: 0;
   --over-margin: 6px;
   width: calc(100% + 2 * var(--over-margin));
   left: calc(var(--over-margin) * -1);
