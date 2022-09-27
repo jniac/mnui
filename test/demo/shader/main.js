@@ -121,7 +121,8 @@ float shadowRamp(vec2 dist) {
   float curve = dist.y;
   float a = fwidth(strait) * 0.5 * uAliasThreshold;
   if (curve < a) {
-    return smoothstep(0.0, a, curve);
+    float x = smoothstep(0.0, a, curve);
+    return x;
   } else {
     strait = (strait - a) / (1.0 - a);
     curve = (curve - a) / (1.0 - a);
@@ -158,8 +159,10 @@ void main()	{
     vec2 uv2 = getUv2(uv, i + 1.0);
     vec2 dist2 = sinDistance(uv2);
     if (dist.y > 0.0) {
-      float newShadow = 1.0 - shadowRamp(dist2);
-      shadow *= newShadow;
+      float newShadow = clamp01(1.0 - shadowRamp(dist2));
+      float edge = clamp01(dist.y * 1.0);
+      shadow *= mix(1.0, newShadow, edge);
+      // shadow *= edge;
       // color = mod(i, 2.0) == 1.0 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 1.0);
       dist = dist2;
     }
@@ -183,7 +186,7 @@ const uniforms = {
   uOffset1: { value: new THREE.Vector4(20, .1, 1, 1) },
   uColor: { value: new THREE.Color('#524c60') },
   uGrainIntensity: { value: .05 },
-  uAliasThreshold: { value: 1 },
+  uAliasThreshold: { value: 5 },
 }
 
 camera.position.set(0, 0, 1)
@@ -213,7 +216,7 @@ mnui.utils.onFrame(({ time }) => {
     mnui.vector('shadow (length, alpha)', uniforms.uShadow.value, { min: 0, step: .1, localStorage })
     mnui.vector('offset', uniforms.uOffset1.value, { step: .1, localStorage })
     uniforms.uAliasThreshold.value = 
-      mnui.range('alias threshold', { initialValue: 1 }, { min: 0, max: 10, localStorage }).value
+      mnui.range('alias threshold', uniforms.uAliasThreshold.value, { min: 0, max: 10, localStorage }).value
     mnui.color('color', uniforms.uColor)
     uniforms.uGrainIntensity.value = 
       mnui.range('grain intensity', uniforms.uGrainIntensity).value
