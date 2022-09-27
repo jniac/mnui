@@ -160,7 +160,8 @@ void main()	{
     vec2 dist2 = sinDistance(uv2);
     if (dist.y > 0.0) {
       float newShadow = clamp01(1.0 - shadowRamp(dist2));
-      float edge = clamp01(dist.y * 1.0);
+      // NOTE: "50" here is a not responsive...
+      float edge = clamp01(dist.y * 50.0);
       shadow *= mix(1.0, newShadow, edge);
       // shadow *= edge;
       // color = mod(i, 2.0) == 1.0 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 1.0);
