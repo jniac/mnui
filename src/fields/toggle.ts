@@ -1,5 +1,5 @@
 import { InputValueArg, resolveValueArg } from '../types'
-import { Field } from '../core/Field'
+import { Field, FieldOptions } from '../core/Field'
 
 const getSvg = (id: string, {
   width = 32,
@@ -21,9 +21,8 @@ const getSvg = (id: string, {
 export const toggle = (
   path: string, 
   valueArg: InputValueArg<boolean> = true,
-  {
-    localStorage = false,
-  } = {}) => {
+  options: FieldOptions = {},
+  ) => {
 
   const onCreate = (field: Field<boolean>) => {
     const { div, inputDiv } = field
@@ -45,5 +44,5 @@ export const toggle = (
     }
   }
 
-  return Field.updateOrCreate<boolean>(path, onCreate, valueArg, localStorage)
+  return Field.updateOrCreate<boolean>(path, onCreate, valueArg, options)
 }

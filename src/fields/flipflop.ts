@@ -1,4 +1,4 @@
-import { Field } from '../core/Field'
+import { Field, FieldOptions } from '../core/Field'
 import { createSimpleButton } from '../elements/simple-button'
 import { InputValueArg, resolveValueArg } from '../types'
 
@@ -14,9 +14,7 @@ const resolveNames = (str: string) => {
 export const flipflop = (
   path: string,
   valueArg: InputValueArg<boolean> = { initialValue: false },
-  {
-    localStorage = false,
-  } = {}
+  options: FieldOptions = {},
 ) => {
 
   const onCreate = (field: Field<boolean>) => {
@@ -34,5 +32,5 @@ export const flipflop = (
     })
   }
 
-  return Field.updateOrCreate<boolean>(path, onCreate, valueArg, localStorage)
+  return Field.updateOrCreate<boolean>(path, onCreate, valueArg, options)
 }

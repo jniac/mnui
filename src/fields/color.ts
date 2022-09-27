@@ -1,17 +1,13 @@
 import { InputValueArg, resolveValueArg } from '../types'
-import { Field } from '../core/Field'
+import { Field, FieldOptions } from '../core/Field'
 import { cloneValue } from '../core/value'
 
 type RGBA = { r: number, g: number, b: number, a: number }
 
-type ColorDeclaration = 
-| `#${string}`
-| number
-| { r: number, g: number, b: number, a?: number }
-
-type RangeOptions = Partial<{
-  localStorage: boolean
-}>
+type ColorDeclaration =
+  | `#${string}`
+  | number
+  | { r: number, g: number, b: number, a?: number }
 
 const colorDeclarationToRgba = (color: ColorDeclaration): RGBA => {
   if (typeof color === 'string') {
@@ -99,7 +95,7 @@ const getValueInInitialFormat = (color: RGBA, initialValue: ColorDeclaration) =>
 export const color = (
   path: string,
   valueArg: InputValueArg<ColorDeclaration> = 0,
-  options: RangeOptions = {},
+  options: FieldOptions = {},
 ) => {
   const onCreate = (field: Field<ColorDeclaration>) => {
     const { div, inputDiv } = field
@@ -125,5 +121,5 @@ export const color = (
     })
   }
 
-  return Field.updateOrCreate<ColorDeclaration>(path, onCreate, valueArg, options.localStorage ?? false)
+  return Field.updateOrCreate<ColorDeclaration>(path, onCreate, valueArg, options)
 }

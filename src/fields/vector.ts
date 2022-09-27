@@ -1,6 +1,6 @@
 import { clamp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
-import { Field } from '../core/Field'
+import { Field, FieldOptions } from '../core/Field'
 import { onDrag } from '../event/drag'
 import { createSimpleInputWithLabel } from '../elements/simple-input-with-label'
 
@@ -26,21 +26,32 @@ const resolveKeys = (keys: string[] | string) => {
   }
 }
 
+const defaultVectorOptions = {
+  min: -Infinity, 
+  max: Infinity, 
+  step: 1,
+  keys: null as string[] | string | null,
+  keyMap: {} as Record<string, string>,
+  map: [identity, identity] as [(x: number) => number, (x: number) => number],
+}
+
+type VectorOptions = FieldOptions & Partial<typeof defaultVectorOptions>
+
 export const vector = <T extends object>(
   path: string, 
   valueArg: InputValueArg<T>, 
-  { 
-    min = -Infinity, 
-    max = Infinity, 
-    step = 1,
-    keys = null as string[] | string | null,
-    keyMap = {} as Record<string, string>,
-    map = [identity, identity] as [(x: number) => number, (x: number) => number],
-    localStorage = false,
-  } = {},
+  options: VectorOptions = {},
 ) => {
   
   const onCreate = (field: Field<T>) => {
+    let { 
+      min = -Infinity, 
+      max = Infinity, 
+      step = 1,
+      keys = null as string[] | string | null,
+      keyMap = {} as Record<string, string>,
+      map = [identity, identity] as [(x: number) => number, (x: number) => number],
+    } = { ...defaultVectorOptions, ...options }
     const { div, inputDiv } = field
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('vector')
@@ -81,5 +92,5 @@ export const vector = <T extends object>(
     })
   }
   
-  return Field.updateOrCreate<T>(path, onCreate, valueArg, localStorage)
+  return Field.updateOrCreate<T>(path, onCreate, valueArg, options)
 }

@@ -94,6 +94,8 @@ ${vectorCss}
 
 #mnui .group > .content {
   padding-left: 4px;
+  display: flex;
+  flex-direction: column;
 }
 
 #mnui .group.collapsed > .label::after {

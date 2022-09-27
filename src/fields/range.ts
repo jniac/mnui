@@ -1,14 +1,13 @@
 import { InputValueArg, resolveValueArg } from '../types'
-import { Field } from '../core/Field'
+import { Field, FieldOptions } from '../core/Field'
 import { createSlider } from '../elements/slider'
 import { createSimpleInput } from '../elements/simple-input'
 import { onDrag } from '../event/drag'
 
-type RangeOptions = {
+type RangeOptions = FieldOptions & {
   min: number
   max: number
   step: number
-  localStorage: boolean
 }
 
 type RangeOptionsArg = Partial<RangeOptions> | [number, number]
@@ -20,20 +19,19 @@ const resolveRangeOptions = (arg: RangeOptionsArg) => {
       min,
       max,
       step: 0,
-      localStorage: false,
     }
   }
   const {
     min = 0,
     max = 1,
     step = 0,
-    localStorage = false,
+    ...props
   } = arg
   return {
     min,
     max,
     step,
-    localStorage,
+    ...props
   }
 }
 
@@ -75,5 +73,5 @@ export const range = (
     })
   }
 
-  return Field.updateOrCreate<number>(path, onCreate, valueArg, options.localStorage)
+  return Field.updateOrCreate<number>(path, onCreate, valueArg, options)
 }

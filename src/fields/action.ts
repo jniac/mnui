@@ -1,9 +1,10 @@
-import { Field } from '../core/Field'
+import { Field, FieldOptions } from '../core/Field'
 import { onNextFrame } from '../core/time'
 import { createSimpleButton } from '../elements/simple-button'
 
 export const action = (
   path: string,
+  options: Omit<FieldOptions, 'useLocalStorage'> = {},
 ) => {
 
   const onCreate = (field: Field<boolean>) => {
@@ -15,12 +16,10 @@ export const action = (
     button.onclick = () => {
       field.setUserValue(true)
       onNextFrame(() => {
-        field.setValue(false, {
-          triggerUserChange: false,
-        })
+        field.setUpdateValue(false)
       })
     }
   }
 
-  return Field.updateOrCreate<boolean>(path, onCreate, false, false)
+  return Field.updateOrCreate<boolean>(path, onCreate, false, options)
 }

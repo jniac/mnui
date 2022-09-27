@@ -6,26 +6,33 @@ import { frame } from './time'
 
 type Callback<T> = (value: T, field: Field<T>) => void
 
+const defaultFieldOptions   = {
+  useLocalStorage: false,
+  order: 0,
+}
+
+export type FieldOptions = Partial<typeof defaultFieldOptions>
+
 export class Field<T> extends Item {
 
   static updateOrCreate<T>(
     partialPath: string,
     onCreate: (field: Field<T>) => void,
     valueArg: InputValueArg<T>,
-    useLocalStorage: boolean,
+    options: FieldOptions = {},
   ) {
     const path = `${Group.current?.path ?? ''}/${partialPath}`
     const field = map.get(path) as Field<T>
     if (field) {
+      field.applyOptions(options)
       if (field.hasChanged === false) {
         const { value } = resolveValueArg(valueArg, field.value)
-        field.useLocalStorage = useLocalStorage
         field.setValue(value, { triggerUserChange: false })
       }
       return field
     } else {
       const field = new Field<T>(path)
-      field.useLocalStorage = useLocalStorage
+      field.applyOptions(options)
       onCreate(field)
       return field
     }
@@ -82,6 +89,12 @@ export class Field<T> extends Item {
     })
   }
 
+  applyOptions(options: FieldOptions) {
+    this.useLocalStorage = options.useLocalStorage ?? defaultFieldOptions.useLocalStorage
+    const order = options.order ?? defaultFieldOptions.order
+    this.div.style.setProperty('order', order.toString())
+  }
+
   getValue() { return this.#value }
   
   cloneValue() { return cloneValue(this.#value) }
@@ -107,12 +120,25 @@ export class Field<T> extends Item {
     return true
   }
 
+  /**
+   * Sets the new value from the user interaction. Since the user has interracted
+   * (and the new value is different from the current one) the field will trigger 
+   * change callbacks (and will store to the local storage, if relevant).
+   */
   setUserValue(newValue: T) {
     const changed = this.setValue(newValue, { triggerUserChange: true })
     if (this.useLocalStorage) {
       setStoreItem(`${this.id}-value`, this.#value)
     }
     return changed
+  }
+
+  /**
+   * Sets the program current value. The user is not behind the new value. 
+   * Change callbacks must not be called (neither the local storage option).
+   */
+  setUpdateValue(newValue: T) {
+    return this.setValue(newValue, { triggerUserChange: false })
   }
 
   getHasChanged() {
