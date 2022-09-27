@@ -1,5 +1,5 @@
 import { Field } from '../core/Field'
-import { createSimpleButton } from '../dom/elements/simple-button'
+import { createSimpleButton } from '../elements/simple-button'
 import { InputValueArg, resolveValueArg } from '../types'
 
 const resolveNames = (str: string) => {

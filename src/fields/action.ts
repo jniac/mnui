@@ -1,6 +1,6 @@
 import { Field } from '../core/Field'
 import { onNextFrame } from '../core/time'
-import { createSimpleButton } from '../dom/elements/simple-button'
+import { createSimpleButton } from '../elements/simple-button'
 
 export const action = (
   path: string,

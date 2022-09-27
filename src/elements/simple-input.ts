@@ -1,4 +1,4 @@
-import { createElement } from '../html'
+import { createElement } from '../core/html'
 
 export const createSimpleInput = (parent: HTMLElement) => {
   const [div] = createElement(parent, `

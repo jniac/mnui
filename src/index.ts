@@ -1,5 +1,5 @@
 
-import { setCustomStyle } from './dom/root'
+import { setCustomStyle } from './core/root'
 
 import { action } from './fields/action'
 import { action as button } from './fields/action'

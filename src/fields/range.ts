@@ -1,7 +1,7 @@
 import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from '../core/Field'
-import { createSlider } from '../dom/elements/slider'
-import { createSimpleInput } from '../dom/elements/simple-input'
+import { createSlider } from '../elements/slider'
+import { createSimpleInput } from '../elements/simple-input'
 import { onDrag } from '../event/drag'
 
 type RangeOptions = {

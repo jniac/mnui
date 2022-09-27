@@ -1,4 +1,4 @@
-import { createElement } from '../html'
+import { createElement } from '../core/html'
 import { createSimpleInput } from './simple-input'
 
 export const createSimpleInputWithLabel = (

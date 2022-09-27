@@ -1,4 +1,4 @@
-import { getMainCss } from './style/main.css'
+import { getMainCss } from '../style/main.css'
 
 let root: HTMLDivElement | null = null
 let customCss = ''
@@ -24,5 +24,21 @@ export const setCustomStyle = (customStyle: string) => {
   const style = document.head.querySelector('#mnui-style')
   if (style) {
     style.innerHTML = getMainCss(customCss)
+  }
+}
+
+const destroyRoot = () => {
+  if (root) {
+    root.remove()
+    document.head.querySelector('#mnui-style')?.remove()
+    root = null
+  }
+}
+
+export const destroyRootIfEmpty = () => {
+  if (root) {
+    if (root.childElementCount === 0) {
+      destroyRoot()
+    }
   }
 }

@@ -2,7 +2,7 @@ import { clamp } from '../math'
 import { InputValueArg, resolveValueArg } from '../types'
 import { Field } from '../core/Field'
 import { onDrag } from '../event/drag'
-import { createSimpleInputWithLabel } from '../dom/elements/simple-input-with-label'
+import { createSimpleInputWithLabel } from '../elements/simple-input-with-label'
 
 type Vector = Record<string, number>
 

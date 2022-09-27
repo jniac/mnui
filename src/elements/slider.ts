@@ -1,5 +1,5 @@
-import { inverseLerp } from '../../math'
-import { createElement } from '../html'
+import { inverseLerp } from '../math'
+import { createElement } from '../core/html'
 
 export const createSlider = (parent: HTMLElement, {
   min = 0,

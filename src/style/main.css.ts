@@ -6,10 +6,10 @@ import { simpleInputCss } from '../elements/simple-input.css'
 import { simpleInputWithLabelCss } from '../elements/simple-input-with-label.css'
 import { sliderCss } from '../elements/slider.css'
 
-import { actionCss } from '../../fields/action.css'
-import { rangeCss } from '../../fields/range.css'
-import { toggleCss } from '../../fields/toggle.css'
-import { vectorCss } from '../../fields/vector.css'
+import { actionCss } from '../fields/action.css'
+import { rangeCss } from '../fields/range.css'
+import { toggleCss } from '../fields/toggle.css'
+import { vectorCss } from '../fields/vector.css'
 
 export const getMainCss = (customCss = '') => /* css */`
 

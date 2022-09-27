@@ -1,4 +1,4 @@
-import { getOrCreateRoot } from '../dom/root'
+import { getOrCreateRoot } from './root'
 import { getStoreItem, setStoreItem } from '../store'
 
 export const map = new Map<string, Item>()
