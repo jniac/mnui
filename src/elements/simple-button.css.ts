@@ -1,7 +1,6 @@
 export const simpleButtonCss = /* css */`
 
 #mnui .simple-button {
-  transform: translateY(1px);
   width: 100%;
   height: 100%;
 }

@@ -79,16 +79,21 @@ export const onNextFrame = (callback: TimeCallback) => onNextFrameSet.add(callba
 Object.assign(window, { SafeSet })
 
 const frameLoop = (ms: number) => {
-  requestAnimationFrame(frameLoop)
   timeOld = time
   time = ms / 1000
   deltaTime = time - timeOld
   frame++
-  for (const callback of onNextFrameSet.dump()) {
-    callback(timeInfo)
-  }
-  for (const callback of onFrameSet.safeIterate()) {
-    callback(timeInfo)
+  try {
+    for (const callback of onNextFrameSet.dump()) {
+      callback(timeInfo)
+    }
+    for (const callback of onFrameSet.safeIterate()) {
+      callback(timeInfo)
+    }
+    requestAnimationFrame(frameLoop)
+  } catch (error) {
+    console.error('Error during "frame" phase, cancel loop, see below:')
+    console.error(error)
   }
 }
 
