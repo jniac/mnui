@@ -13,7 +13,7 @@ export const borderCss = /* css */`
   position: absolute;
   width: 100%;
   height: 1px;
-  top: 0;
+  top: -1px;
   background-color: var(--color);
   opacity: .2;
 }
@@ -31,7 +31,7 @@ export const borderCss = /* css */`
   right: var(--padding);
   width: unset;
   height: 1px;
-  top: 0;
+  top: -1px;
   background-color: var(--color);
   opacity: .2;
 }
@@ -51,7 +51,7 @@ export const borderCss = /* css */`
   right: var(--padding);
   width: unset;
   height: 1px;
-  top: 0;
+  top: -1px;
   background-color: var(--color);
   opacity: .2;
 }
