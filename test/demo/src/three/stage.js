@@ -24,11 +24,22 @@ scene.add(sun)
 camera.position.set(0, 0, 2.5)
 
 const animate = () => {
-  requestAnimationFrame(animate)
 
+  let _error = null
   scene.traverse(child => {
-    child.onUpdate?.()
+    try {
+      child.onUpdate?.()
+    } catch (error) {
+      _error = error
+    }
   })
+
+  if (_error) {
+    console.error('Error during "onUpdate" phase. Animation frame loop broken. See below:')
+    console.error(_error)
+  } else {
+    requestAnimationFrame(animate)
+  }
 
   renderer.render(scene, camera)
 }

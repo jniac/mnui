@@ -78,6 +78,18 @@ getCube({
         cube.rotation.set(0, 0, 0)
       }
 
+      if (mnui.color('color (object)', cube.material.color).hasChanged) {
+        cube.material.emissive.copy(cube.material.color)
+      }
+
+      {
+        const { value, hasChanged } = mnui.color('color (hex string)', '#' + cube.material.color.getHexString())
+        if (hasChanged) {
+          cube.material.color.set(value)
+          cube.material.emissive.set(value)
+        }
+      }
+
       {
         // NOTE: This is very cool, very legible: if playing (move or rotate) 
         // display "stop" (2nd label), otherwise display "play" (1rst label)

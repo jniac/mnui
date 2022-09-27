@@ -1,6 +1,6 @@
 {
   "name": "@jniac/mnui",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/mnui.js",
   "types": "dist/mnui.d.ts",

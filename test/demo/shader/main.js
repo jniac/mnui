@@ -4,7 +4,6 @@ import { glsl_utils, glsl_easings, glsl_iq_noise } from '../src/glsl/utils/index
 import { mnui } from '../src/mnui.js'
 import { camera, renderer } from '../src/three/stage.js'
 
-
 const vertexShader = /* glsl */`
 
   precision mediump float;
@@ -80,6 +79,7 @@ uniform vec4 uOffset1;
 uniform float uAliasThreshold;
 uniform float uZoom;
 uniform vec3 uColor;
+uniform float uGrainIntensity;
 
 varying vec3 vPosition;
 varying vec4 vColor;
@@ -143,7 +143,7 @@ vec2 getUv2(in vec2 uv, in float i) {
 
 float grain(in vec2 uv) {
   float x = noise(vec3(uv * 1000.1, uTime));
-  return mix(0.9, 1.1, x);
+  return mix(1.0 - uGrainIntensity, 1.0 + uGrainIntensity, x);
 }
 
 void main()	{
@@ -175,13 +175,14 @@ void main()	{
 
 const uniforms = {
   uTime: { value: 0 },
-  uZoom: { value: .25 },
+  uZoom: { value: .3 },
   uSize: { value: new THREE.Vector4(window.innerWidth, window.innerHeight, window.innerWidth / window.innerHeight) },
   uParam1: { value: new THREE.Vector4() },
   uTransform1: { value: new THREE.Vector4(1.7, 1.6, 45.7, 0.64) },
   uShadow: { value: new THREE.Vector4(7, 1, 1, .66) },
   uOffset1: { value: new THREE.Vector4(20, .1, 1, 1) },
-  uColor: { value: new THREE.Color('#221c30') },
+  uColor: { value: new THREE.Color('#524c60') },
+  uGrainIntensity: { value: .05 },
   uAliasThreshold: { value: 1 },
 }
 
@@ -206,12 +207,16 @@ const localStorage = mnui.toggle('shader/localStorage (save)', { initialValue: f
 mnui.utils.onFrame(({ time }) => {
   uniforms.uTime.value = time
   mnui.group('shader', () => {
-    mnui.range('zoom', uniforms.uZoom.value, [0, 5]).onUserChange(value => uniforms.uZoom.value = value)
+    mnui.range('zoom', uniforms.uZoom.value, [0, 5])
+      .onUserChange(value => uniforms.uZoom.value = value)
     mnui.vector('transform', uniforms.uTransform1.value, { step: .1, localStorage })
     mnui.vector('shadow (length, alpha)', uniforms.uShadow.value, { min: 0, step: .1, localStorage })
     mnui.vector('offset', uniforms.uOffset1.value, { step: .1, localStorage })
-    mnui.range('alias threshold', { initialValue: 1 }, { min: 0, max: 10, localStorage })
-      .onUserChange(value => uniforms.uAliasThreshold.value = value)
+    uniforms.uAliasThreshold.value = 
+      mnui.range('alias threshold', { initialValue: 1 }, { min: 0, max: 10, localStorage }).value
+    mnui.color('color', uniforms.uColor)
+    uniforms.uGrainIntensity.value = 
+      mnui.range('grain intensity', uniforms.uGrainIntensity).value
   })
 })
 
