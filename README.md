@@ -50,3 +50,6 @@ yarn start
 ## Note
 - Minimal ES version: 2015 (using private identifier)
 - Use [Fira Code](https://github.com/tonsky/FiraCode) from [google fonts](https://fonts.google.com/specimen/Fira+Code?query=fira+code) for UI rendering.
+
+## Resources
+- [configurer-rollup-bundles-esm-cjs](https://buzut.net/configurer-rollup-bundles-esm-cjs/#Installer-les-dependances)
