@@ -1,6 +1,6 @@
 import { THREE } from '../src/three/THREE.js'
 import { getPlane } from '../src/three/utils.js'
-import { glsl_utils, glsl_easings, glsl_iq_noise } from '../src/glsl/utils/index.js'
+import { glsl_utils, glsl_easings } from '../src/glsl/utils/index.js'
 import { mnui } from '../src/mnui.js'
 import { camera, renderer } from '../src/three/stage.js'
 
@@ -34,7 +34,6 @@ precision mediump int;
 
 ${glsl_utils}
 ${glsl_easings}
-${glsl_iq_noise}
 
 // https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
@@ -121,7 +120,7 @@ float shadowRamp(vec2 dist) {
   float curve = dist.y;
   float a = fwidth(strait) * 0.5 * uAliasThreshold;
   if (curve < a) {
-    float x = smoothstep(0.0, a, curve);
+    float x = smoothstep(0.0, a, curve) * (uShadow.z + Shadow.w) / 2.0;
     return x;
   } else {
     strait = (strait - a) / (1.0 - a);
