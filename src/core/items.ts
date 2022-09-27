@@ -1,4 +1,4 @@
-import { getOrCreateRoot } from './root'
+import { destroyRootIfEmpty, getOrCreateRoot } from './root'
 import { getStoreItem, setStoreItem } from '../store'
 
 export const map = new Map<string, Item>()
@@ -57,6 +57,7 @@ export class Item {
     // NOTE: destroy has to be binded to 'this'
     this.destroy = () => {
       if (this.#destroyed === false) {
+        const isRootChild = this.#parent === null
         this.#destroyed = true
         for (const callback of this.#onDestroySet) {
           callback()
@@ -68,6 +69,9 @@ export class Item {
         this.#children = []
         map.delete(this.#path)
         idMap.delete(this.#id)
+        if (isRootChild) {
+          destroyRootIfEmpty()
+        }
       }
     }
   }
