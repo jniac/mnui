@@ -228,3 +228,25 @@ mnui.utils.onDrag(renderer.domElement, info => {
   uniforms.uTransform1.value.z += info.positionDelta.x * .006 * uniforms.uZoom.value
   uniforms.uTransform1.value.w += -info.positionDelta.y * .006 * uniforms.uZoom.value
 })
+
+const getSerializedUniforms = () => {
+  const format = x => x.toFixed(1)
+  return `
+const uniforms = {
+  uTime: { value: 0 },
+  uZoom: { value: ${uniforms.uZoom.value} },
+  uSize: { value: new THREE.Vector4(window.innerWidth, window.innerHeight, window.innerWidth / window.innerHeight) },
+  uParam1: { value: new THREE.Vector4() },
+  uTransform1: { value: new THREE.Vector4(${uniforms.uTransform1.value.toArray().map(format).join(', ')}) },
+  uShadow: { value: new THREE.Vector4(${uniforms.uShadow.value.toArray().map(format).join(', ')}) },
+  uOffset1: { value: new THREE.Vector4(${uniforms.uOffset1.value.toArray().map(format).join(', ')}) },
+  uColor: { value: new THREE.Color('#${uniforms.uColor.value.getHexString()}') },
+  uGrainIntensity: { value: ${uniforms.uGrainIntensity.value}} },
+  uAliasThreshold: { value: ${uniforms.uAliasThreshold.value} },
+}`.trim()
+}
+
+mnui.action('shader/show values', { order: 10 }).onUserChange(() => {
+  const wnd = window.open('about:blank')
+  wnd.document.write(`<pre>${getSerializedUniforms()}</pre>`)
+})
