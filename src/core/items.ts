@@ -19,6 +19,9 @@ const getNewId = (path: string) => {
   return idMap.has(baseId) ? getIncrementalId(baseId) : baseId
 }
 
+let itemCount = 0
+const SECURITY_MAX_ITEM_COUNT = 200
+
 export class Item {
   #id: string
   get id() { return this.#id }
@@ -54,6 +57,12 @@ export class Item {
     map.set(this.#path, this)
     idMap.set(this.#id, this)
 
+    itemCount++
+
+    if (itemCount > SECURITY_MAX_ITEM_COUNT) {
+      throw new Error(`Too many instances (> ${SECURITY_MAX_ITEM_COUNT}) of Item (group/field). Something is probably wrong.`)
+    }
+
     // NOTE: destroy has to be binded to 'this'
     this.destroy = () => {
       if (this.#destroyed === false) {
@@ -69,6 +78,9 @@ export class Item {
         this.#children = []
         map.delete(this.#path)
         idMap.delete(this.#id)
+
+        itemCount--
+
         if (isRootChild) {
           destroyRootIfEmpty()
         }
