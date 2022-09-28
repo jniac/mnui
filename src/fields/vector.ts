@@ -1,5 +1,5 @@
 import { clamp } from '../math'
-import { InputValueArg, resolveValueArg } from '../types'
+import { ValueArg, resolveValueArg } from '../types'
 import { Field, FieldOptions } from '../core/Field'
 import { onDrag } from '../event/drag'
 import { createSimpleInputWithLabel } from '../elements/simple-input-with-label'
@@ -39,7 +39,7 @@ type VectorOptions = FieldOptions & Partial<typeof defaultVectorOptions>
 
 export const vector = <T extends object>(
   path: string, 
-  valueArg: InputValueArg<T>, 
+  valueArg: ValueArg<T>, 
   options: VectorOptions = {},
 ) => {
   

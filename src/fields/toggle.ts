@@ -1,4 +1,4 @@
-import { InputValueArg, resolveValueArg } from '../types'
+import { ValueArg, resolveValueArg } from '../types'
 import { Field, FieldOptions } from '../core/Field'
 
 const getSvg = (id: string, {
@@ -20,7 +20,7 @@ const getSvg = (id: string, {
 
 export const toggle = (
   path: string, 
-  valueArg: InputValueArg<boolean> = true,
+  valueArg: ValueArg<boolean> = true,
   options: FieldOptions = {},
   ) => {
 

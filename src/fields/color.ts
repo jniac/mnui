@@ -1,4 +1,4 @@
-import { InputValueArg, resolveValueArg } from '../types'
+import { ValueArg, resolveValueArg } from '../types'
 import { Field, FieldOptions } from '../core/Field'
 import { cloneValue } from '../core/value'
 
@@ -94,7 +94,7 @@ const getValueInInitialFormat = (color: RGBA, initialValue: ColorDeclaration) =>
 
 export const color = (
   path: string,
-  valueArg: InputValueArg<ColorDeclaration> = 0,
+  valueArg: ValueArg<ColorDeclaration> = 0,
   options: FieldOptions = {},
 ) => {
   const onCreate = (field: Field<ColorDeclaration>) => {

@@ -1,4 +1,4 @@
-import { InputValueArg, resolveValueArg } from '../types'
+import { ValueArg, resolveValueArg } from '../types'
 import { Field, FieldOptions } from '../core/Field'
 import { createSlider } from '../elements/slider'
 import { createSimpleInput } from '../elements/simple-input'
@@ -37,7 +37,7 @@ const resolveRangeOptions = (arg: RangeOptionsArg) => {
 
 export const range = (
   path: string,
-  valueArg: InputValueArg<number> = 0,
+  valueArg: ValueArg<number> = 0,
   optionsArg: RangeOptionsArg = {},
 ) => {
   const options = resolveRangeOptions(optionsArg)

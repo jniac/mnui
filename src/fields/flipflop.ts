@@ -1,6 +1,6 @@
 import { Field, FieldOptions } from '../core/Field'
 import { createSimpleButton } from '../elements/simple-button'
-import { InputValueArg, resolveValueArg } from '../types'
+import { ValueArg, resolveValueArg } from '../types'
 
 const resolveNames = (str: string) => {
   const tokens = str.split(':')
@@ -13,7 +13,7 @@ const resolveNames = (str: string) => {
 
 export const flipflop = (
   path: string,
-  valueArg: InputValueArg<boolean> = { initialValue: false },
+  valueArg: ValueArg<boolean> = { initialValue: false },
   options: FieldOptions = {},
 ) => {
 

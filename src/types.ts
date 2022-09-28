@@ -1,22 +1,47 @@
-export type InputValueArg<T> = 
-  | { value: T; initialValue?: T}
-  | { initialValue: T }
-  | [T, T]
-  | T
 
-export const resolveValueArg = <T>(arg: InputValueArg<T>, currentValue?: T): { value: T; initialValue: T}  => {
-  if (Array.isArray(arg)) {
-    const [initialValue, value] = arg
-    return { value, initialValue }
+type Wrap<T> = Exclude<T, Function> | (() => T)
+
+export type ValueArg<T> = 
+  | { value: Wrap<T>; initialValue?: Wrap<T>}
+  | { initialValue: Wrap<T> }
+  | [Wrap<T>, Wrap<T>]
+  | Wrap<T>
+
+const unwrap = <T>(value: Wrap<T>): T => {
+  const result = typeof value === 'function' 
+    ? (value as () => T)() 
+    : value
+
+  if (typeof result === 'function') {
+    throw new Error(`Value could not be a function once resolved.`)
   }
-  if (arg && (typeof arg === 'object') && arg.constructor === Object) {
-    if ('value' in arg) {
-      const { value, initialValue = value } = arg as { value: T; initialValue?: T} 
-      return { value, initialValue }
-    } else if ('initialValue' in arg) {
-      const { initialValue } = arg as { initialValue: T} 
-      return { value: currentValue ?? initialValue, initialValue }
+
+  return result
+}
+
+/**
+ * Wow, this is trick. Since any value (the current value, or the initial one) could 
+ * be a function (getter) instead of a plain value (primitive or object with constructor 
+ * (eg. Vector3)), we have here to carefully unwrap any resolved value declaration.
+ * 
+ * This is not very legible.
+ */
+export const resolveValueArg = <T>(valueArg: ValueArg<T>, currentValue?: T): { value: T; initialValue: T }  => {
+  if (Array.isArray(valueArg)) {
+    const [initialValue, value] = valueArg
+    return { value: unwrap(value), initialValue: unwrap(initialValue) }
+  }
+
+  if (valueArg && (typeof valueArg === 'object') && valueArg.constructor === Object) {
+    if ('value' in valueArg) {
+      const { value, initialValue = value } = valueArg as { value: Wrap<T>; initialValue?: Wrap<T> } 
+      return { value: unwrap(value), initialValue: unwrap(initialValue) }
+    } else if ('initialValue' in valueArg) {
+      const { initialValue } = valueArg as { initialValue: Wrap<T> } 
+      return { value: currentValue ?? unwrap(initialValue), initialValue: unwrap(initialValue) }
     }
   }
-  return { value: arg as T, initialValue: arg as T }
+
+  const unwrapped = unwrap(valueArg as Wrap<T>)
+  return { value: unwrapped, initialValue: unwrapped }
 }

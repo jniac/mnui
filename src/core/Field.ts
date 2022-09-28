@@ -1,4 +1,4 @@
-import { InputValueArg, resolveValueArg } from '../types'
+import { ValueArg, resolveValueArg } from '../types'
 import { Item, Group, map, createDiv } from './items'
 import { cloneValue, isEquivalent, copyValueTo } from './value'
 import { getStoreItem, setStoreItem } from '../store'
@@ -18,7 +18,7 @@ export class Field<T> extends Item {
   static updateOrCreate<T>(
     partialPath: string,
     onCreate: (field: Field<T>) => void,
-    valueArg: InputValueArg<T>,
+    valueArg: ValueArg<T>,
     options: FieldOptions = {},
   ) {
     const path = `${Group.current?.path ?? ''}/${partialPath}`
