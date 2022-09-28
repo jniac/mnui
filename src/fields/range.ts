@@ -1,4 +1,4 @@
-import { ValueArg, resolveValueArg } from '../types'
+import { ensureValueMap, resolveValueArg, ValueArg, ValueMap } from '../types'
 import { Field, FieldOptions } from '../core/Field'
 import { createSlider } from '../elements/slider'
 import { createSimpleInput } from '../elements/simple-input'
@@ -8,6 +8,7 @@ type RangeOptions = FieldOptions & {
   min: number
   max: number
   step: number
+  map: ValueMap
 }
 
 type RangeOptionsArg = Partial<RangeOptions> | [number, number]
@@ -46,7 +47,9 @@ export const range = (
       min,
       max,
       step,
+      map,
     } = options
+    const [mapFromSrc, mapFromDst] = ensureValueMap(map)
     const { div, inputDiv } = field
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('range')
@@ -56,7 +59,7 @@ export const range = (
     simple.input.onblur = () => inputDiv.classList.remove('focused')
     simple.input.oninput = () => {
       const value = Number.parseFloat(simple.input.value)
-      field.setUserValue(value)
+      field.setUserValue(mapFromDst(value))
     }
     let sliderOnInputValue = NaN
     slider.input.oninput = () => {
@@ -68,7 +71,7 @@ export const range = (
       }
     })
     field.init(initialValue, value => {
-      simple.update(value)
+      simple.update(mapFromSrc(value))
       slider.update(value)
     })
   }

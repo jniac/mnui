@@ -1,12 +1,10 @@
 import { clamp } from '../math'
-import { ValueArg, resolveValueArg } from '../types'
+import { ensureValueMap, resolveValueArg, ValueArg, ValueMap } from '../types'
 import { Field, FieldOptions } from '../core/Field'
 import { onDrag } from '../event/drag'
 import { createSimpleInputWithLabel } from '../elements/simple-input-with-label'
 
 type Vector = Record<string, number>
-
-const identity = <T>(value: T) => value
 
 const cleanNumberInputString = (value: string) => {
   value = value.replace(/[^\d\.]/g, '')
@@ -32,7 +30,7 @@ const defaultVectorOptions = {
   step: 1,
   keys: null as string[] | string | null,
   keyMap: {} as Record<string, string>,
-  map: [identity, identity] as [(x: number) => number, (x: number) => number],
+  map: undefined as Partial<ValueMap> | undefined,
 }
 
 type VectorOptions = FieldOptions & Partial<typeof defaultVectorOptions>
@@ -50,8 +48,9 @@ export const vector = <T extends object>(
       step = 1,
       keys = null as string[] | string | null,
       keyMap = {} as Record<string, string>,
-      map = [identity, identity] as [(x: number) => number, (x: number) => number],
+      map,
     } = { ...defaultVectorOptions, ...options }
+    const [mapFromSrc, mapFromDst] = ensureValueMap(map)
     const { div, inputDiv } = field
     const { initialValue } = resolveValueArg(valueArg)
     div.classList.add('vector')
@@ -69,7 +68,7 @@ export const vector = <T extends object>(
         if (cleanString !== input.value) {
           input.value = cleanString
         }
-        const subValue = clamp(map[1](Number.parseFloat(cleanString)), min, max)
+        const subValue = clamp(mapFromDst(Number.parseFloat(cleanString)), min, max)
         const value = field.cloneValue() as Vector
         value[key] = subValue
         field.setUserValue(value as T)
@@ -86,7 +85,7 @@ export const vector = <T extends object>(
       for (const { key, input } of subFields) {
         // NOTE: Do not update focused input!
         if (document.activeElement !== input) {
-          input.value = map[0]((value as Vector)[key]).toString()
+          input.value = mapFromSrc((value as Vector)[key]).toString()
         }
       }
     })

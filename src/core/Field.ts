@@ -1,4 +1,4 @@
-import { ValueArg, resolveValueArg } from '../types'
+import { resolveValueArg, ValueArg } from '../types'
 import { Item, Group, map, createDiv } from './items'
 import { cloneValue, isEquivalent, copyValueTo } from './value'
 import { getStoreItem, setStoreItem } from '../store'
