@@ -120,7 +120,7 @@ float shadowRamp(vec2 dist) {
   float curve = dist.y;
   float a = fwidth(strait) * 0.5 * uAliasThreshold;
   if (curve < a) {
-    float x = smoothstep(0.0, a, curve) * (uShadow.z + Shadow.w) / 2.0;
+    float x = smoothstep(0.0, a, curve) * (uShadow.z + uShadow.w) / 2.0;
     return x;
   } else {
     strait = (strait - a) / (1.0 - a);
