@@ -110,6 +110,7 @@ export const createDiv = (item: Item, className: string, html: string) => {
   return div
 }
 
+let current: Group | null = null
 export class Group extends Item {
 
   static getOrCreate(partialPath: string) {
@@ -117,14 +118,13 @@ export class Group extends Item {
     return map.get(path) as Group ?? new Group(path)
   }
 
-  static #previous: Group | null = null
-  static current: Group | null = null
+  static get current() { return current }
 
   within(callback: () => void) {
-    Group.#previous = Group.current
-    Group.current = this
+    const previous = current
+    current = this
     callback()
-    Group.current = Group.#previous
+    current = previous
   }
 
   div: HTMLDivElement
