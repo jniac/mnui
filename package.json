@@ -6,7 +6,7 @@
   "types": "dist/mnui.d.ts",
   "scripts": {
     "start": "node scripts/start.mjs",
-    "build": "rollup --config rollup.config.js && mv dist/index.js dist/mnui.js && mv dist/index.d.ts dist/mnui.d.ts && rm -rf dist/types"
+    "build": "rollup --config rollup.config.js && mv dist/output/mnui.js dist/mnui.js && rm -rf dist/output"
   },
   "keywords": [],
   "author": "",
