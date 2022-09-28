@@ -18,8 +18,14 @@ mnui.setCustomStyle(`
   }
 `)
 
+
+let x = 3
 const renderLoop = () => {
   requestAnimationFrame(renderLoop)
+  
+  x = mnui.range('getter test/x', () => x, [0, 10]).value
+  x = mnui.range('getter test/x (value)', { value: () => x }, [0, 10]).value
+  mnui.range('getter test/x (initial value)', { initialValue: () => x }, [0, 10])
 
   mnui.group('My Component', () => {
     someState.active = mnui.toggle('active', someState.active).value
