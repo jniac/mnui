@@ -6,16 +6,16 @@ import { frame } from './time'
 
 type Callback<T> = (value: T, field: Field<T>) => void
 
-const defaultFieldOptions   = {
+const defaultFieldOptions = {
   order: 0,
   useLocalStorage: false,
   ignoreUserNaN: true,
   userEpsilon: 1e-9,
 }
 
-export type FieldOptions = typeof defaultFieldOptions
+export type FieldOptions = Partial<typeof defaultFieldOptions>
 
-export class Field<T> extends Item implements FieldOptions {
+export class Field<T> extends Item implements Required<FieldOptions> {
 
   static updateOrCreate<T>(
     partialPath: string,
@@ -44,9 +44,9 @@ export class Field<T> extends Item implements FieldOptions {
   #initialValueObjectRef!: T
   #isObject!: boolean
   #frame = -1
-  #updateView: ((value: T) => void) = () => {}
+  #updateView: ((value: T) => void) = () => { }
   #onUserChangeSet = new Set<Callback<T>>()
-  
+
   div: HTMLDivElement
   inputDiv: HTMLDivElement
 
@@ -100,7 +100,7 @@ export class Field<T> extends Item implements FieldOptions {
   }
 
   getValue() { return this.#value }
-  
+
   cloneValue() { return cloneValue(this.#value) }
 
   setValue(newValue: T, { triggerUserChange }: { triggerUserChange: boolean }): boolean {
@@ -133,14 +133,35 @@ export class Field<T> extends Item implements FieldOptions {
    * "userEpsilon" etc.) the user value can be ignored.
    */
   setUserValue(newValue: T) {
-    if (typeof newValue === 'number') {
-      if (this.ignoreUserNaN && Number.isNaN(newValue)) {
-        return false
+    switch (typeof newValue) {
+      case 'number': {
+        if (this.ignoreUserNaN && Number.isNaN(newValue)) {
+          return false
+        }
+        if (Math.abs(newValue - (this.#value as number)) < this.userEpsilon) {
+          return false
+        }
+        break
       }
-      if (Math.abs(newValue - (this.value as number)) < this.userEpsilon) {
-        return false
+
+      case 'object': {
+        if (newValue) {
+          for (const [key, subValue] of Object.entries(newValue)) {
+            if (typeof subValue === 'number') {
+              if (this.ignoreUserNaN && Number.isNaN(subValue)) {
+                return false
+              }
+              const currentSubValue = (this.#value as any)[key] as number
+              if (Math.abs(subValue - currentSubValue) < this.userEpsilon) {
+                (newValue as any)[key] = currentSubValue
+              }
+            }
+          }
+        }
+        break
       }
     }
+
     const changed = this.setValue(newValue, { triggerUserChange: true })
     if (this.useLocalStorage) {
       setStoreItem(`${this.id}-value`, this.#value)
