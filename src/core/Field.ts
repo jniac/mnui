@@ -7,19 +7,21 @@ import { frame } from './time'
 type Callback<T> = (value: T, field: Field<T>) => void
 
 const defaultFieldOptions   = {
-  useLocalStorage: false,
   order: 0,
+  useLocalStorage: false,
+  ignoreUserNaN: true,
+  userEpsilon: 1e-9,
 }
 
-export type FieldOptions = Partial<typeof defaultFieldOptions>
+export type FieldOptions = typeof defaultFieldOptions
 
-export class Field<T> extends Item {
+export class Field<T> extends Item implements FieldOptions {
 
   static updateOrCreate<T>(
     partialPath: string,
     onCreate: (field: Field<T>) => void,
     valueArg: ValueArg<T>,
-    options: FieldOptions = {},
+    options: Partial<FieldOptions> = {},
   ) {
     const path = `${Group.current?.path ?? ''}/${partialPath}`
     const field = map.get(path) as Field<T>
@@ -48,7 +50,10 @@ export class Field<T> extends Item {
   div: HTMLDivElement
   inputDiv: HTMLDivElement
 
-  useLocalStorage = false
+  order = defaultFieldOptions.order
+  useLocalStorage = defaultFieldOptions.useLocalStorage
+  ignoreUserNaN = defaultFieldOptions.ignoreUserNaN
+  userEpsilon = defaultFieldOptions.userEpsilon
 
   constructor(path: string) {
     super(path)
@@ -89,10 +94,9 @@ export class Field<T> extends Item {
     })
   }
 
-  applyOptions(options: FieldOptions) {
-    this.useLocalStorage = options.useLocalStorage ?? defaultFieldOptions.useLocalStorage
-    const order = options.order ?? defaultFieldOptions.order
-    this.div.style.setProperty('order', order.toString())
+  applyOptions(options: Partial<FieldOptions>) {
+    Object.assign(this, options)
+    this.div.style.setProperty('order', this.order.toString())
   }
 
   getValue() { return this.#value }
@@ -124,8 +128,19 @@ export class Field<T> extends Item {
    * Sets the new value from the user interaction. Since the user has interracted
    * (and the new value is different from the current one) the field will trigger 
    * change callbacks (and will store to the local storage, if relevant).
+   * 
+   * Also here some filters can be applied: based on some options ("ignoreUserNaN", 
+   * "userEpsilon" etc.) the user value can be ignored.
    */
   setUserValue(newValue: T) {
+    if (typeof newValue === 'number') {
+      if (this.ignoreUserNaN && Number.isNaN(newValue)) {
+        return false
+      }
+      if (Math.abs(newValue - (this.value as number)) < this.userEpsilon) {
+        return false
+      }
+    }
     const changed = this.setValue(newValue, { triggerUserChange: true })
     if (this.useLocalStorage) {
       setStoreItem(`${this.id}-value`, this.#value)
