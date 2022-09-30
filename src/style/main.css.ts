@@ -63,6 +63,16 @@ ${vectorCss}
   -moz-osx-font-smoothing: grayscale;
 }
 
+#mnui.align-bottom {
+  top: unset;
+  bottom: var(--root-padding);
+}
+
+#mnui.align-right {
+  left: unset;
+  right: var(--root-padding);
+}
+
 #mnui .group > .label {
   user-select: none;
   cursor: pointer;

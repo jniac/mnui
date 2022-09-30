@@ -1,5 +1,5 @@
 
-import { setCustomStyle } from './core/root'
+import { setCustomStyle, setAlign } from './core/root'
 
 import { action } from './fields/action'
 import { color } from './fields/color'
@@ -18,11 +18,16 @@ import { action as button } from './fields/action'
 import { onDrag } from './event/drag'
 import { onFrame, onNextFrame } from './core/time'
 
-
-
-
 export const mnui = {
-  setCustomStyle,
+  
+  setCustomStyle: (...args: Parameters<typeof setCustomStyle>) => {
+    setCustomStyle(...args)
+    return mnui
+  },
+  setAlign: (...args: Parameters<typeof setAlign>) => {
+    setAlign(...args)
+    return mnui
+  },
 
   action,
   button,
