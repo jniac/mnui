@@ -39,12 +39,17 @@ export const setCustomStyle = (customStyle: string) => {
   }
 }
 
-export const setAlign = ({
-  vertical = 'top' as 'top' | 'bottom',
-  horizontal = 'left' as 'left' | 'right',
-}) => {
-  rootProps.alignRight = horizontal === 'right'
-  rootProps.alignBottom = vertical === 'bottom'
+type VerticalAlign = 'top' | 'bottom'
+type HorizontalAlign = 'left' | 'right'
+export const setAlign = (arg: `${VerticalAlign}-${HorizontalAlign}` | { vertical: VerticalAlign, horizontal: HorizontalAlign }) => {
+  if (typeof arg === 'object') {
+    const { horizontal, vertical } = arg
+    rootProps.alignRight = horizontal === 'right'
+    rootProps.alignBottom = vertical === 'bottom'
+  } else {    
+    rootProps.alignRight = arg.includes('right')
+    rootProps.alignBottom = arg.includes('bottom')
+  }
   applyRootProps()
 }
 
