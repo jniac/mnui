@@ -1,3 +1,4 @@
+import { formatNumber } from '../core/format'
 import { createElement } from '../core/html'
 
 export const createSimpleInput = (parent: HTMLElement) => {
@@ -11,7 +12,7 @@ export const createSimpleInput = (parent: HTMLElement) => {
   input.onblur = () => div.classList.remove('focused')
   const update = (value: number) => {
     if (document.activeElement !== input) {
-      input.value = value.toPrecision(3)
+      input.value = formatNumber(value)
     }
   }
   return { input, update }

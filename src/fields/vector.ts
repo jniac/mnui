@@ -57,7 +57,7 @@ export const vector = <T extends object>(
     keys ??= Object.keys(initialValue).filter(key => typeof (initialValue as Vector)[key] === 'number')
     const subFields = resolveKeys(keys).map(key => {
       const id = `${field.id}-${key}`
-      const { div: subDiv, input, label } = createSimpleInputWithLabel(inputDiv, id, keyMap[key] ?? key)
+      const { div: subDiv, input, label, update } = createSimpleInputWithLabel(inputDiv, id, keyMap[key] ?? key)
       subDiv.classList.add('vector-property')
       input.onpointerenter = () => subDiv.classList.add('hovered')
       input.onpointerleave = () => subDiv.classList.remove('hovered')
@@ -79,13 +79,13 @@ export const vector = <T extends object>(
         value[key] = clamp(value[key] + delta, min, max)
         field.setUserValue(value as T)
       })
-      return { key, input }
+      return { key, input, update }
     })
     field.init(initialValue, value => {
-      for (const { key, input } of subFields) {
+      for (const { key, input, update } of subFields) {
         // NOTE: Do not update focused input!
         if (document.activeElement !== input) {
-          input.value = mapFromSrc((value as Vector)[key]).toString()
+          update(mapFromSrc((value as Vector)[key]))
         }
       }
     })
