@@ -58,6 +58,7 @@ ${vectorCss}
   color: var(--color);
   background-color: var(--background-color);
   backdrop-filter: blur(32px) brightness(1.15);
+  touch-action: none;
   -webkit-backdrop-filter: blur(32px) brightness(1.15);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
