@@ -29,7 +29,14 @@ const renderLoop = () => {
     someState.active = mnui.toggle('active', someState.active).value
     someState.x = mnui.range('x', someState.x, { min: 0, max: 10 }).value
     mnui.vector('position', someState.position)
-    mnui.vector('rotation', someState.rotation, { keys: 'x,y,z', map: [x => x * 180 / Math.PI, x => x * Math.PI / 180], step: .05 })
+    mnui.vector('rotation', someState.rotation, { 
+      keys: 'x,y,z', 
+      step: .05,
+      map: [
+        x => x * 180 / Math.PI, 
+        x => x * Math.PI / 180,
+      ], 
+    })
   })
 
   cube.position.copy(someState.position)
