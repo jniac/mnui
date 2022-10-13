@@ -18,6 +18,8 @@ import { action as button } from './fields/action'
 import { onDrag } from './event/drag'
 import { onFrame, onNextFrame } from './core/time'
 
+export type { Field } from './core/Field'
+
 export const mnui = {
   
   setCustomStyle: (...args: Parameters<typeof setCustomStyle>) => {
