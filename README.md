@@ -63,7 +63,7 @@ Properties may be grouped:
 ```ts
 mnui.range('my-comp/my-value', 4, { min: 0, max: 10 })
 ```
-<img width="400" alt="Capture d’écran 2022-10-18 à 12 59 36" src="https://user-images.githubusercontent.com/11039919/196412687-561b5776-785c-4299-9970-3ba04f0278a7.png">
+<img width="400" alt="screenshot" src="https://user-images.githubusercontent.com/11039919/196412687-561b5776-785c-4299-9970-3ba04f0278a7.png">
 
 
 Into any arbitrary hierarchy:
@@ -71,7 +71,7 @@ Into any arbitrary hierarchy:
 mnui.range('foo/bar/baz/qux/and/others/my-value-1', 4, { min: 0, max: 10 })
 mnui.range('foo/bar/baz/qux/and/others/my-value-2', 2, { min: 0, max: 10 })
 ```
-<img width="400" alt="Capture d’écran 2022-10-18 à 13 00 12" src="https://user-images.githubusercontent.com/11039919/196412819-badb0845-b800-4a8e-85d2-deaeaa049f62.png">
+<img width="400" alt="screenshot" src="https://user-images.githubusercontent.com/11039919/196412819-badb0845-b800-4a8e-85d2-deaeaa049f62.png">
 
 
 
@@ -107,21 +107,21 @@ const updateLoop = () => {
 ```ts
 import { mnui } from '@jniac/mnui'
 
-const someState = {
-  active: true,
-  x: 5,
-  position: { x: .3, y: .4, z: .5 },
-  rotation: { x: .3, y: .4, z: .5, order: 'XYZ' },
-}
+mnui.setAlign('bottom-right')
 
-mnui.setCustomStyle(`
+mnui.setCustomStyle(/* css */`
   #mnui {
     --color: #005128;
     --background-color: #fff9;
   }
 `)
 
-mnui.setAlign('bottom-right')
+const someState = {
+  active: true,
+  x: 5,
+  position: { x: .3, y: .4, z: .5 },
+  rotation: { x: .3, y: .4, z: .5, order: 'XYZ' },
+}
 
 const renderLoop = () => {
   requestAnimationFrame(renderLoop)
@@ -147,7 +147,8 @@ requestAnimationFrame(renderLoop)
 ```
 will render into: 
 
-<img width="432" alt="image" src="https://user-images.githubusercontent.com/11039919/196382125-4a710df2-106a-4ff4-8570-d331864eeb71.png">
+<img width="432" alt="screenshot" src="https://user-images.githubusercontent.com/11039919/196413677-479a3431-017e-4398-81c6-d04bd549b23f.png">
+
 
 
 ## Dev
