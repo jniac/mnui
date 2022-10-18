@@ -11,6 +11,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jniac/mnui"
+  },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.5.0",
     "babel-loader": "^8.2.5",
