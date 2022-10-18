@@ -17,7 +17,7 @@ npm i @jniac/mnui
 
 [UNPKG:](https://unpkg.com/@jniac/mnui@1.0.6/dist/mnui.js)
 ```js
-import { mnui } from 'https://unpkg.com/@jniac/mnui@1.0.6/dist/mnui.js'
+import { mnui } from 'https://unpkg.com/@jniac/mnui@1.0.7/dist/mnui.js'
 ```
 
 ## Very, very permissive & multi-paradigm?
@@ -63,11 +63,18 @@ Properties may be grouped:
 ```ts
 mnui.range('my-comp/my-value', 4, { min: 0, max: 10 })
 ```
+<img width="400" alt="Capture d’écran 2022-10-18 à 12 59 36" src="https://user-images.githubusercontent.com/11039919/196412687-561b5776-785c-4299-9970-3ba04f0278a7.png">
+
+
 Into any arbitrary hierarchy:
 ```ts
 mnui.range('foo/bar/baz/qux/and/others/my-value-1', 4, { min: 0, max: 10 })
 mnui.range('foo/bar/baz/qux/and/others/my-value-2', 2, { min: 0, max: 10 })
 ```
+<img width="400" alt="Capture d’écran 2022-10-18 à 13 00 12" src="https://user-images.githubusercontent.com/11039919/196412819-badb0845-b800-4a8e-85d2-deaeaa049f62.png">
+
+
+
 And for the sake of simplicity 😅, an intermediate "group" level may be declared: 
 ```ts
 mnui.group('foo/bar/baz/qux/and/others', () => {
@@ -82,7 +89,7 @@ Some properties — as "range" — allows concise declarations
  mnui.range('my-value-1', 4, [0, 10]) // [0, 10] <=> { min: 0, max: 10 }
 ```
 
-So through the "listener / render-loop" choice, the "intermediate-group" usage and some "concise" options, declarations of properties to be displayed may cover a wide range of usages:
+So through the "listener / render-loop" choice, the "intermediate-group" usage and some "concise" options, declarations of properties via `mnui` may cover a wide range of usages:
 ```ts
 mnui.group('my-component', () => {
   mnui.range('scale', 1, [0, 10]).onUserChange(x => {
