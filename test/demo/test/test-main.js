@@ -7,7 +7,7 @@ scene.background.set('#dde8f3')
 
 const someState = {
   active: true,
-  x: 5,
+  scale: 1,
   position: { x: .03, y: .04, z: .05 },
 }
 
@@ -24,16 +24,19 @@ const radianMap = [x => x * 180 / Math.PI, x => x * Math.PI / 180]
 mnui.range('map test/angle', { initialValue: 0 }, { min: -Math.PI, max: Math.PI, map: radianMap })
 
 
-let x = 3
+let lol = 3
 const renderLoop = () => {
   requestAnimationFrame(renderLoop)
   
-  x = mnui.range('getter test/x', () => x, [0, 10]).value
-  x = mnui.range('getter test/x (value)', { value: () => x }, [0, 10]).value
-  mnui.range('getter test/x (initial value)', { initialValue: () => x }, [0, 10])
+  lol = mnui.range('getter test/lol', () => lol, [0, 10]).value
+  lol = mnui.range('getter test/lol (value)', { value: () => lol }, [0, 10]).value
+  mnui.range('getter test/lol (initial value)', { initialValue: () => lol }, [0, 10])
 
   mnui.group('cube', () => {
-    someState.x = mnui.range('x', someState.x, { min: 0, max: 10 }).value
+    someState.scale = mnui.range('scale', someState.scale, { min: 0, max: 1.5 }).value
+    mnui.range('scale', someState.scale).onUserChange(value => {
+      cube.scale.setScalar(value)
+    })
     mnui.vector('position', someState.position)
     mnui.vector('rotation', cube.rotation, { keys: 'x,y,z', map: [x => x * 180 / Math.PI, x => x * Math.PI / 180], step: .05 })
     cube.rotation.y = mnui.range('ry', cube.rotation.y, { min: -Math.PI, max: Math.PI, map: radianMap }).value
