@@ -54,6 +54,20 @@ export const getCube = ({
   return applyTransform(new THREE.Mesh(geometry, material), transformProps)
 }
 
+export const getSphere = ({
+  diameter = 1,
+  radius = diameter / 2,
+  materialColor = '#06f',
+  detail = 4,
+  material = getEmissiveMaterial({
+    color: materialColor,
+  }),
+  ...transformProps
+} = {}) => {
+  const geometry = new THREE.IcosahedronGeometry(radius, detail)
+  return applyTransform(new THREE.Mesh(geometry, material), transformProps)
+}
+
 export const getPlane = ({
   size = NaN,
   aspect = NaN,
