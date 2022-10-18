@@ -114,7 +114,7 @@ mnui.setCustomStyle(`
   }
 `)
 
-mnui.setAlign('top-left')
+mnui.setAlign('bottom-right')
 
 const renderLoop = () => {
   requestAnimationFrame(renderLoop)
