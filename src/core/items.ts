@@ -4,6 +4,13 @@ import { getStoreItem, setStoreItem } from '../store'
 export const map = new Map<string, Item>()
 const idMap = new Map<string, Item>()
 
+const cleanPath = (str: string) => {
+  return str
+    .replace(/^\/+/, '')
+    .replace(/\/+$/, '')
+    .replace(/\/{2,}/, '/')
+}
+
 const getIncrementalId = (id: string) => {
   let count = 1
   let incremetalId = ''
@@ -47,8 +54,8 @@ export class Item {
   }
 
   constructor(path: string) {
-    this.#path = path
-    this.#parent = ensureParent(path)
+    this.#path = '/' + cleanPath(path)
+    this.#parent = ensureParent(this.#path)
     if (this.#parent) {
       this.#parent!.#children.push(this)
     }
@@ -66,7 +73,8 @@ export class Item {
     // NOTE: destroy has to be binded to 'this'
     this.destroy = () => {
       if (this.#destroyed === false) {
-        const isRootChild = this.#parent === null
+        const parent = this.#parent
+        const isRootChild = parent === null
         this.#destroyed = true
         for (const callback of this.#onDestroySet) {
           callback()
@@ -83,7 +91,21 @@ export class Item {
 
         if (isRootChild) {
           destroyRootIfEmpty()
+        } else {
+          parent.#removeDestroyedChild(this)
         }
+      }
+    }
+  }
+
+  #removeDestroyedChild(child: Item) {
+    this.#children.splice(this.#children.indexOf(child), 1)
+    if (this.#children.length === 0) {
+      // NOTE: Unnecessary check, since destroy() already does the same check, 
+      // but still there to remind that here the "item" could already be destroyed
+      // (the parent destroying its children).
+      if (this.#destroyed === false) {
+        this.destroy()
       }
     }
   }
@@ -122,6 +144,10 @@ export const createDiv = (item: Item, className: string, html: string) => {
   return div
 }
 
+
+
+
+
 let current: Group | null = null
 export class Group extends Item {
 
@@ -144,7 +170,7 @@ export class Group extends Item {
 
   constructor(path: string) {
     super(path)
-    
+
     this.div = createDiv(this, 'item group', `
       <div class="label">
         <span>${this.name}</span>
