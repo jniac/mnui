@@ -1,13 +1,14 @@
 
-type Wrap<T> = Exclude<T, Function> | (() => T)
+type PotentialFunctionWrap<T> = Exclude<T, Function> | (() => T)
 
 export type ValueArg<T> = 
-  | { value: Wrap<T>; initialValue?: Wrap<T>}
-  | { initialValue: Wrap<T> }
-  | [Wrap<T>, Wrap<T>]
-  | Wrap<T>
+  | { value: PotentialFunctionWrap<T>; initialValue?: PotentialFunctionWrap<T>}
+  | { initialValue: PotentialFunctionWrap<T> }
+  | [PotentialFunctionWrap<T>, PotentialFunctionWrap<T>]
+  | PotentialFunctionWrap<T>
+  | undefined
 
-const unwrap = <T>(value: Wrap<T>): T => {
+const unwrapPotentialFunction = <T>(value: PotentialFunctionWrap<T>): T => {
   const result = typeof value === 'function' 
     ? (value as () => T)() 
     : value
@@ -29,19 +30,19 @@ const unwrap = <T>(value: Wrap<T>): T => {
 export const resolveValueArg = <T>(valueArg: ValueArg<T>, currentValue?: T): { value: T; initialValue: T }  => {
   if (Array.isArray(valueArg)) {
     const [initialValue, value] = valueArg
-    return { value: unwrap(value), initialValue: unwrap(initialValue) }
+    return { value: unwrapPotentialFunction(value), initialValue: unwrapPotentialFunction(initialValue) }
   }
 
   if (valueArg && (typeof valueArg === 'object') && valueArg.constructor === Object) {
     if ('value' in valueArg) {
-      const { value, initialValue = value } = valueArg as { value: Wrap<T>; initialValue?: Wrap<T> } 
-      return { value: unwrap(value), initialValue: unwrap(initialValue) }
+      const { value, initialValue = value } = valueArg as { value: PotentialFunctionWrap<T>; initialValue?: PotentialFunctionWrap<T> } 
+      return { value: unwrapPotentialFunction(value), initialValue: unwrapPotentialFunction(initialValue) }
     } else if ('initialValue' in valueArg) {
-      const { initialValue } = valueArg as { initialValue: Wrap<T> } 
-      return { value: currentValue ?? unwrap(initialValue), initialValue: unwrap(initialValue) }
+      const { initialValue } = valueArg as { initialValue: PotentialFunctionWrap<T> } 
+      return { value: currentValue ?? unwrapPotentialFunction(initialValue), initialValue: unwrapPotentialFunction(initialValue) }
     }
   }
 
-  const unwrapped = unwrap(valueArg as Wrap<T>)
+  const unwrapped = unwrapPotentialFunction((valueArg ?? currentValue ?? 0) as PotentialFunctionWrap<T>)
   return { value: unwrapped, initialValue: unwrapped }
 }

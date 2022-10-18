@@ -38,7 +38,7 @@ const resolveRangeOptions = (arg: RangeOptionsArg) => {
 
 export const range = (
   path: string,
-  valueArg: ValueArg<number> = 0,
+  valueArg: ValueArg<number> = undefined,
   optionsArg: RangeOptionsArg = {},
 ) => {
   const options = resolveRangeOptions(optionsArg)
